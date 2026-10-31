@@ -1,0 +1,41 @@
+---
+import site from '../../content/site.json';
+
+const { station } = Astro.props;
+---
+
+<section class="station station--origin" id="origin" data-station="origin" aria-labelledby="origin-title">
+  <div class="container">
+    <div class="station__content">
+      <div class="station__scrim" aria-hidden="true"></div>
+      <p class="label station-label" data-reveal>
+        <span class="station-label__index">{station.index}</span>
+        <span class="station-label__name">Origin · About</span>
+      </p>
+      <h2 class="title" id="origin-title" data-reveal>
+        {site.about.title}
+      </h2>
+      <p class="lead" data-reveal>
+        {site.about.body}
+      </p>
+      <div class="origin__lists" data-reveal>
+        <div>
+          <h3 class="label">Right now</h3>
+          <ul class="origin__list" role="list">
+            {site.about.now.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="label">Exploring</h3>
+          <ul class="origin__list" role="list">
+            {site.about.interests.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,138 @@
+---
+// Concept-study mock-up (fictional brand). Purely decorative: hidden from assistive tech.
+const { mobile = false } = Astro.props;
+---
+
+{mobile ? (
+  <div class="mock mock--coaching mock--mobile" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-logo">
+        <i class="m-logo__mark"></i>Lumen
+      </span>
+      <span class="m-burger">
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+    <div class="m-hero">
+      <span class="m-pill">
+        <i></i>Admissions open
+      </span>
+      <span class="m-h1">Learn with clarity. Grow with confidence.</span>
+      <span class="m-p">Focused coaching for Classes 8–12 and entrance exams.</span>
+      <span class="m-btn m-btn--block">Explore courses</span>
+      <span class="m-btn m-btn--ghost m-btn--block">Book a demo class</span>
+    </div>
+    <div class="m-card">
+      <span class="m-card__head">
+        <b>This week</b>
+        <span>Batch A</span>
+      </span>
+      <span class="m-row">
+        <i style="--c:#3b6ea5"></i>
+        <span>Physics</span>
+        <b>Mon 4:00</b>
+      </span>
+      <span class="m-row">
+        <i style="--c:#8aa2c4"></i>
+        <span>Mathematics</span>
+        <b>Tue 4:00</b>
+      </span>
+      <span class="m-row">
+        <i style="--c:#1f3a5f"></i>
+        <span>Chemistry</span>
+        <b>Wed 5:30</b>
+      </span>
+    </div>
+  </div>
+) : (
+  <div class="mock mock--coaching" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-logo">
+        <i class="m-logo__mark"></i>Lumen Academy
+      </span>
+      <span class="m-links">
+        <span>Courses</span>
+        <span>Faculty</span>
+        <span>Timetable</span>
+        <span>Admissions</span>
+      </span>
+      <span class="m-btn">Book a demo class</span>
+    </div>
+    <div class="m-hero">
+      <div class="m-hero__copy">
+        <span class="m-pill">
+          <i></i>Admissions open for the new session
+        </span>
+        <span class="m-h1">
+          Learn with clarity.
+          <br />
+          Grow with confidence.
+        </span>
+        <span class="m-p">
+          Focused coaching for Classes 8–12 and entrance exams — small batches, patient teachers and personal mentoring.
+        </span>
+        <span class="m-actions">
+          <span class="m-btn">Explore courses</span>
+          <span class="m-btn m-btn--ghost">Talk to a counsellor</span>
+        </span>
+      </div>
+      <div class="m-card">
+        <span class="m-card__head">
+          <b>This week</b>
+          <span>Batch A</span>
+        </span>
+        <span class="m-row">
+          <i style="--c:#3b6ea5"></i>
+          <span>Physics · Motion in a plane</span>
+          <b>Mon 4:00</b>
+        </span>
+        <span class="m-row">
+          <i style="--c:#8aa2c4"></i>
+          <span>Mathematics · Integrals</span>
+          <b>Tue 4:00</b>
+        </span>
+        <span class="m-row">
+          <i style="--c:#1f3a5f"></i>
+          <span>Chemistry · Bonding</span>
+          <b>Wed 5:30</b>
+        </span>
+        <span class="m-row">
+          <i style="--c:#b9c8dc"></i>
+          <span>Doubt-clearing session</span>
+          <b>Sat 10:00</b>
+        </span>
+        <span class="m-card__foot">Small batches · Weekly progress check-ins</span>
+      </div>
+    </div>
+    <div class="m-section">
+      <span class="m-kicker">Programs</span>
+      <span class="m-h2">Courses for every stage.</span>
+      <span class="m-cards">
+        <span class="m-course">
+          <i></i>
+          <b>Foundation</b>
+          <span>Classes 8–10 · Maths &amp; Science</span>
+        </span>
+        <span class="m-course">
+          <i></i>
+          <b>Senior Secondary</b>
+          <span>Classes 11–12 · PCM / PCB</span>
+        </span>
+        <span class="m-course">
+          <i></i>
+          <b>Entrance Prep</b>
+          <span>JEE · NEET · Mock tests</span>
+        </span>
+      </span>
+    </div>
+    <div class="m-band">
+      <span>Visit the campus or join a free demo class this week.</span>
+      <span class="m-btn m-btn--light">Enquire now</span>
+    </div>
+    <div class="m-foot">
+      <span>Lumen Academy</span>
+      <span>Courses · Faculty · Admissions · Contact</span>
+    </div>
+  </div>
+)}

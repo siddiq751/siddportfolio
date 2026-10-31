@@ -1,0 +1,99 @@
+---
+// Concept-study mock-up (fictional brand). Purely decorative: hidden from assistive tech.
+const { mobile = false } = Astro.props;
+---
+
+{mobile ? (
+  <div class="mock mock--folio mock--mobile" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-mono">AM—</span>
+      <span class="m-burger">
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+    <div class="m-intro">
+      <span class="m-status">
+        <i></i>Available for work
+      </span>
+      <span class="m-name">Alex Morgan</span>
+      <span class="m-p">Designer &amp; developer crafting calm, considered interfaces.</span>
+    </div>
+    <div class="m-grid">
+      <span class="m-work">
+        <span class="m-thumb m-thumb--a"></span>
+        <span class="m-cap">
+          <b>Field Notes</b>
+          <span>Editorial</span>
+        </span>
+      </span>
+      <span class="m-work">
+        <span class="m-thumb m-thumb--b"></span>
+        <span class="m-cap">
+          <b>Arc</b>
+          <span>Brand identity</span>
+        </span>
+      </span>
+    </div>
+  </div>
+) : (
+  <div class="mock mock--folio" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-mono">AM—</span>
+      <span class="m-links">
+        <span>Work</span>
+        <span>About</span>
+        <span>Journal</span>
+        <span>Contact</span>
+      </span>
+      <span class="m-status">
+        <i></i>Available for work
+      </span>
+    </div>
+    <div class="m-intro">
+      <span class="m-name">Alex Morgan</span>
+      <span class="m-intro__row">
+        <span class="m-p">Designer &amp; developer crafting calm, considered interfaces for independent brands.</span>
+        <span class="m-meta">
+          Selected work
+          <br />
+          Index — 04
+        </span>
+      </span>
+    </div>
+    <div class="m-grid">
+      <span class="m-work">
+        <span class="m-thumb m-thumb--a"></span>
+        <span class="m-cap">
+          <b>Field Notes</b>
+          <span>Editorial</span>
+        </span>
+      </span>
+      <span class="m-work">
+        <span class="m-thumb m-thumb--b"></span>
+        <span class="m-cap">
+          <b>Arc</b>
+          <span>Brand identity</span>
+        </span>
+      </span>
+      <span class="m-work">
+        <span class="m-thumb m-thumb--c"></span>
+        <span class="m-cap">
+          <b>Quiet Hours</b>
+          <span>Web app</span>
+        </span>
+      </span>
+      <span class="m-work">
+        <span class="m-thumb m-thumb--d"></span>
+        <span class="m-cap">
+          <b>Grid Studies</b>
+          <span>Exploration</span>
+        </span>
+      </span>
+    </div>
+    <div class="m-foot">
+      <span>Let's work together →</span>
+      <span>hello@alexmorgan.example</span>
+    </div>
+  </div>
+)}

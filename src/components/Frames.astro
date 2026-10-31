@@ -1,0 +1,27 @@
+---
+// Browser and phone frames for concept-study previews. A preview is a picture of a
+// (fictional) website, so the frame is exposed as one image with a description.
+const { kind = 'browser', dark = false, label } = Astro.props;
+---
+
+{kind === 'phone' ? (
+  <div class="phone" role="img" aria-label={label}>
+    <div class="phone__screen">
+      <slot />
+    </div>
+  </div>
+) : (
+  <div class:list={['browser', { 'browser--dark': dark }]} role="img" aria-label={label}>
+    <div class="browser__bar" aria-hidden="true">
+      <span class="browser__dots">
+        <i />
+        <i />
+        <i />
+      </span>
+      <span class="browser__url">Concept preview</span>
+    </div>
+    <div class="browser__view" aria-hidden="true">
+      <slot />
+    </div>
+  </div>
+)}

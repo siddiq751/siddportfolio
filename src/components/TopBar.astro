@@ -1,0 +1,42 @@
+---
+import site from '../content/site.json';
+import Mark from './Mark.astro';
+
+const { askEnabled = false } = Astro.props;
+---
+
+<header class="topbar" data-topbar>
+  <div class="container topbar__inner">
+    <a class="brand" href="/" aria-label={`${site.name} — home`}>
+      <Mark />
+      <span>{site.name.toUpperCase()}</span>
+    </a>
+    <div class="topbar__actions">
+      {askEnabled && (
+        <button class="btn btn--secondary btn--sm topbar__ask" type="button" data-ask-open aria-haspopup="dialog">
+          <svg class="i" aria-hidden="true">
+            <use href="#i-ask" />
+          </svg>
+          Ask
+        </button>
+      )}
+      <button
+        class="topbar__index"
+        type="button"
+        data-index-open
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Control+K Meta+K"
+      >
+        <span class="topbar__index-lines" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+        Index <kbd aria-hidden="true">⌘K</kbd>
+      </button>
+      <a class="btn btn--primary btn--sm topbar__contact" href="/#contact">
+        Contact
+      </a>
+    </div>
+  </div>
+</header>

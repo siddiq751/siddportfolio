@@ -1,0 +1,28 @@
+---
+// Orientation, always: a vertical rail on wide screens, a station pill on small ones.
+const { stations } = Astro.props;
+---
+
+<nav class="rail" aria-label="Stations" data-rail>
+  <ol>
+    {stations.map((s) => (
+      <li>
+        <a href={`/#${s.id}`} data-station-link={s.id}>
+          <span class="rail__name">
+            {s.index} {s.label}
+          </span>
+          <span class="rail__tick" aria-hidden="true" />
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<button class="pill is-hidden" type="button" data-pill data-index-open aria-haspopup="dialog">
+  <span class="pill__index" data-pill-index>
+    01
+  </span>
+  <span data-pill-label>Core</span>
+  <span class="visually-hidden"> — open the index</span>
+  <span class="pill__bar" aria-hidden="true"></span>
+</button>

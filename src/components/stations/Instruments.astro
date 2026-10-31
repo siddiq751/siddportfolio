@@ -1,0 +1,57 @@
+---
+import site from '../../content/site.json';
+
+const { station } = Astro.props;
+---
+
+<section
+  class="station station--instruments"
+  id="instruments"
+  data-station="instruments"
+  aria-labelledby="instruments-title"
+>
+  <div class="container">
+    <div class="station__content">
+      <div class="station__scrim" aria-hidden="true"></div>
+      <p class="label station-label" data-reveal>
+        <span class="station-label__index">{station.index}</span>
+        <span class="station-label__name">Instruments · Skills</span>
+      </p>
+      <h2 class="title" id="instruments-title" data-reveal>
+        Tools I build with.
+      </h2>
+      <p class="lead" data-reveal>
+        The technologies I use in my projects — and keep learning every day. No ratings, just the toolkit.
+      </p>
+      <div class="instruments__filters" role="group" aria-label="Filter by category" data-reveal>
+        <button class="chip" type="button" aria-pressed="true" data-skill-filter="all">
+          All
+        </button>
+        {site.skills.map((g) => (
+          <button class="chip" type="button" aria-pressed="false" data-skill-filter={g.id}>
+            {g.label}
+          </button>
+        ))}
+      </div>
+      <div class="instruments__groups" data-reveal>
+        {site.skills.map((g, gi) => (
+          <div class="instruments__group" data-skill-group={g.id}>
+            <h3 class="label">{g.label}</h3>
+            <ul role="list">
+              {g.items.map((item, ii) => (
+                <li>
+                  <button class="skill" type="button" data-skill={`${gi}:${ii}`} aria-describedby="skills-note">
+                    {item}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="visually-hidden" id="skills-note">
+        Highlights this skill in the 3D constellation.
+      </p>
+    </div>
+  </div>
+</section>

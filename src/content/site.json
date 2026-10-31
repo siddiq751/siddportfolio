@@ -1,0 +1,73 @@
+{
+  "_note": "Single source of truth for the site, structured data and the AI assistant. Only verified information belongs here. Empty values hide their sections.",
+  "name": "Siddiq",
+  "role": "Freelance Web Developer",
+  "availability": "Open to freelance projects",
+  "headline": "Building digital experiences that make businesses stand out.",
+  "intro": "I design and develop modern, responsive websites that help businesses and individuals establish a strong online presence.",
+  "about": {
+    "title": "Turning ideas into meaningful digital experiences.",
+    "body": "I'm Siddiq, a developer who enjoys creating clean, modern and user-friendly websites. I focus on thoughtful design, responsive layouts and functional experiences. I'm continuously improving my skills and exploring better ways to build for the web.",
+    "now": [
+      "Building personal portfolio projects",
+      "Developing demonstration websites",
+      "Learning and improving frontend development"
+    ],
+    "interests": [
+      "Thoughtful, minimal interface design",
+      "Responsive layouts that feel native on every screen",
+      "Subtle motion and 3D on the web",
+      "AI-assisted development workflows"
+    ],
+    "photo": null
+  },
+  "skills": [
+    { "id": "frontend", "label": "Frontend", "items": ["HTML5", "CSS3", "JavaScript", "React"] },
+    { "id": "backend", "label": "Backend & tools", "items": ["Node.js", "Express", "MongoDB", "Git", "GitHub"] },
+    {
+      "id": "workflow",
+      "label": "Workflow",
+      "items": ["Responsive design", "API integration", "UI implementation", "AI-assisted development"]
+    }
+  ],
+  "services": [
+    {
+      "title": "Business Websites",
+      "text": "Modern websites for small businesses — clear, credible and easy to navigate.",
+      "type": "Business Website"
+    },
+    {
+      "title": "Landing Pages",
+      "text": "Focused pages designed around a single, clear call to action.",
+      "type": "Landing Page"
+    },
+    {
+      "title": "Portfolio Websites",
+      "text": "Personal websites that showcase your skills, story and work.",
+      "type": "Portfolio Website"
+    },
+    {
+      "title": "Website Redesign",
+      "text": "Improving existing websites through cleaner design and better usability.",
+      "type": "Website Redesign"
+    }
+  ],
+  "process": [
+    { "title": "Discover", "text": "Understand the idea, goals and requirements." },
+    { "title": "Design", "text": "Plan the structure and visual direction." },
+    { "title": "Develop", "text": "Build a responsive and functional website." },
+    { "title": "Deliver", "text": "Test, refine and prepare the website for launch." }
+  ],
+  "contact": {
+    "email": "siddiqmd751@gmail.com",
+    "whatsapp": { "display": "+91 74167 15011", "url": "https://wa.me/917416715011" }
+  },
+  "links": {
+    "github": null,
+    "linkedin": null
+  },
+  "cv": null,
+  "experience": [],
+  "education": [],
+  "certifications": []
+}

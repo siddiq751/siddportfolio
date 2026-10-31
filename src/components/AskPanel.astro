@@ -1,0 +1,62 @@
+---
+import site from '../content/site.json';
+---
+
+<dialog class="ask" data-ask aria-labelledby="ask-title">
+  <div class="ask__inner">
+    <div class="ask__head">
+      <div>
+        <h2 class="label" id="ask-title">
+          Ask about {site.name}'s work
+        </h2>
+      </div>
+      <button class="icon-btn" type="button" data-ask-close aria-label="Close assistant">
+        <svg class="i" aria-hidden="true">
+          <use href="#i-close"></use>
+        </svg>
+      </button>
+    </div>
+    <div class="ask__log" data-ask-log aria-live="polite">
+      <div class="ask__intro" data-ask-intro>
+        <p>I answer from verified information on this site only. Try:</p>
+        <div class="ask__suggestions">
+          <button type="button" data-ask-suggest>
+            What has {site.name} built so far?
+          </button>
+          <button type="button" data-ask-suggest>
+            Which technologies does {site.name} work with?
+          </button>
+          <button type="button" data-ask-suggest>
+            What services do you offer?
+          </button>
+        </div>
+      </div>
+    </div>
+    <form class="ask__form" data-ask-form>
+      <div class="ask__row">
+        <label class="visually-hidden" for="ask-q">
+          Your question
+        </label>
+        <input
+          id="ask-q"
+          name="q"
+          type="text"
+          maxlength="500"
+          autocomplete="off"
+          placeholder="Ask a question…"
+          required
+        />
+        <button class="btn btn--primary btn--sm" type="submit" data-ask-send>
+          Ask
+        </button>
+      </div>
+      <p class="ask__disclosure">
+        AI-generated answers based on this portfolio's verified content. They can be wrong — for anything important,{' '}
+        <a class="link" href={`mailto:${site.contact.email}`}>
+          ask {site.name} directly
+        </a>
+        .
+      </p>
+    </form>
+  </div>
+</dialog>

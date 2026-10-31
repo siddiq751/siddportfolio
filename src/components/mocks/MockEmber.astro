@@ -1,0 +1,126 @@
+---
+// Concept-study mock-up (fictional brand). Purely decorative: hidden from assistive tech.
+const { mobile = false } = Astro.props;
+---
+
+{mobile ? (
+  <div class="mock mock--ember mock--mobile" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-logo">Ember &amp; Oak</span>
+      <span class="m-burger">
+        <i></i>
+        <i></i>
+      </span>
+    </div>
+    <div class="m-hero">
+      <div class="m-plate">
+        <i class="m-plate__dish"></i>
+        <i class="m-plate__sauce"></i>
+        <i class="m-plate__food m-plate__food--a"></i>
+        <i class="m-plate__food m-plate__food--b"></i>
+        <i class="m-plate__herb m-plate__herb--a"></i>
+        <i class="m-plate__herb m-plate__herb--b"></i>
+        <i class="m-plate__herb m-plate__herb--c"></i>
+      </div>
+      <span class="m-kicker">Wood-fired kitchen</span>
+      <span class="m-h1">
+        Slow-cooked <em>over open flame.</em>
+      </span>
+      <span class="m-btn m-btn--block">Reserve a table</span>
+    </div>
+    <div class="m-menu">
+      <b class="m-menu__cat">Small plates</b>
+      <span class="m-dish">
+        <span>Charred corn, lime butter</span>
+        <i></i>
+        <span>380</span>
+      </span>
+      <span class="m-dish">
+        <span>Smoked paneer</span>
+        <i></i>
+        <span>420</span>
+      </span>
+    </div>
+  </div>
+) : (
+  <div class="mock mock--ember" aria-hidden="true">
+    <div class="m-nav">
+      <span class="m-links">
+        <span>Menu</span>
+        <span>Story</span>
+        <span>Private dining</span>
+      </span>
+      <span class="m-logo">Ember &amp; Oak</span>
+      <span class="m-btn">Reserve a table</span>
+    </div>
+    <div class="m-hero">
+      <div class="m-hero__copy">
+        <span class="m-kicker">Wood-fired kitchen</span>
+        <span class="m-h1">
+          Slow-cooked
+          <br />
+          <em>over open flame.</em>
+        </span>
+        <span class="m-p">Seasonal plates, small-batch breads and a quiet room made for long dinners.</span>
+        <span class="m-actions">
+          <span class="m-btn">Reserve a table</span>
+          <span class="m-link">View the menu</span>
+        </span>
+      </div>
+      <div class="m-plate">
+        <i class="m-plate__dish"></i>
+        <i class="m-plate__sauce"></i>
+        <i class="m-plate__food m-plate__food--a"></i>
+        <i class="m-plate__food m-plate__food--b"></i>
+        <i class="m-plate__herb m-plate__herb--a"></i>
+        <i class="m-plate__herb m-plate__herb--b"></i>
+        <i class="m-plate__herb m-plate__herb--c"></i>
+      </div>
+    </div>
+    <div class="m-menu">
+      <span class="m-kicker">Tonight's menu</span>
+      <span class="m-menu__cols">
+        <span class="m-menu__col">
+          <b class="m-menu__cat">Small plates</b>
+          <span class="m-dish">
+            <span>Charred corn, lime butter</span>
+            <i></i>
+            <span>380</span>
+          </span>
+          <span class="m-dish">
+            <span>Smoked paneer, green chutney</span>
+            <i></i>
+            <span>420</span>
+          </span>
+          <span class="m-dish">
+            <span>Fire-roasted peppers, feta</span>
+            <i></i>
+            <span>360</span>
+          </span>
+        </span>
+        <span class="m-menu__col">
+          <b class="m-menu__cat">From the fire</b>
+          <span class="m-dish">
+            <span>Ember-roasted chicken, jus</span>
+            <i></i>
+            <span>780</span>
+          </span>
+          <span class="m-dish">
+            <span>Wood-fired aubergine, miso</span>
+            <i></i>
+            <span>560</span>
+          </span>
+          <span class="m-dish">
+            <span>Slow lamb shoulder, flatbread</span>
+            <i></i>
+            <span>920</span>
+          </span>
+        </span>
+      </span>
+    </div>
+    <div class="m-hours">
+      <span>Open Tuesday – Sunday · 6 pm – 11 pm</span>
+      <span>Reservations recommended</span>
+    </div>
+  </div>
+)}

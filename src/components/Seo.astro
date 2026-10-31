@@ -1,0 +1,43 @@
+---
+import site from '../content/site.json';
+
+const { title, description, image = '/og-image.jpg', type = 'website', jsonLd = [] } = Astro.props;
+// Absolute URLs need a known site (SITE_URL or Vercel's production domain); otherwise
+// canonical/og:url are omitted rather than pointing at the wrong place.
+const base = Astro.site;
+const canonical = base ? new URL(Astro.url.pathname, base).href : null;
+const imageUrl = base ? new URL(image, base).href : image;
+const person = {
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  email: `mailto:${site.contact.email}`,
+  knowsAbout: site.skills.flatMap((g) => g.items),
+  ...(base ? { url: base.href } : {}),
+  ...(Object.values(site.links).some(Boolean) ? { sameAs: Object.values(site.links).filter(Boolean) } : {}),
+};
+const graph = { '@context': 'https://schema.org', '@graph': [person, ...jsonLd] };
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content={site.name} />
+{canonical && <link rel="canonical" href={canonical} />}
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_IN" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{canonical && <meta property="og:url" content={canonical} />}
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta
+  property="og:image:alt"
+  content={`${site.name} — ${site.role}. A black chrome sphere rising from a line of light.`}
+/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />

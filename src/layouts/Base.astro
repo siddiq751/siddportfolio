@@ -1,0 +1,76 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/chrome.css';
+import '../styles/stations.css';
+import '../styles/mocks.css';
+import '../styles/document.css';
+import '../styles/motion.css';
+import { getCollection } from 'astro:content';
+import site from '../content/site.json';
+import { getStations } from '../lib/stations.js';
+import Seo from '../components/Seo.astro';
+import Icons from '../components/Icons.astro';
+import TopBar from '../components/TopBar.astro';
+import Rail from '../components/Rail.astro';
+import Footer from '../components/Footer.astro';
+import IndexOverlay from '../components/IndexOverlay.astro';
+import AskPanel from '../components/AskPanel.astro';
+// Inlined before first paint; vercel.json allows it by SHA-256 hash (kept in sync by tests/unit/csp.test.js).
+import bootSource from '../../public/boot.js?raw';
+
+const {
+  title = `${site.name} | ${site.role}`,
+  description = `${site.name} is a freelance web developer building modern, responsive and thoughtfully designed websites.`,
+  image,
+  type,
+  jsonLd,
+  home = false,
+  paper = false,
+} = Astro.props;
+
+const stations = getStations(site);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const askEnabled = import.meta.env.PUBLIC_ASK_ENABLED === 'true';
+---
+
+<!doctype html>
+<html lang="en" class:list={{ 'paper-root': paper }} data-page={home ? 'home' : 'page'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content={paper ? '#F6F3EE' : '#0B0C0C'} />
+    <script is:inline set:html={bootSource} />
+    <Seo title={title} description={description} image={image} type={type} jsonLd={jsonLd} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/archivo-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body class:list={{ paper }} id="top">
+    <Icons />
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    {home && (
+      <div class="world" data-world aria-hidden="true">
+        <div class="world__still">
+          <span class="world__horizon" />
+          <span class="world__eclipse" />
+        </div>
+      </div>
+    )}
+    <TopBar askEnabled={askEnabled} />
+    {home && <Rail stations={stations} />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer stations={stations} />
+    <IndexOverlay stations={stations} projects={projects} askEnabled={askEnabled} />
+    {askEnabled && <AskPanel />}
+    <script>
+      import '../scripts/app.js';
+    </script>
+  </body>
+</html>

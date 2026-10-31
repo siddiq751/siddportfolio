@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Mark from '../components/Mark.astro';
+import site from '../content/site.json';
+---
+
+<Base title={`Lost in the dimension | ${site.name}`} description="This page doesn't exist.">
+  <section class="lost">
+    <div class="lost__inner">
+      <Mark class="lost__mark" />
+      <p class="label">Error 404</p>
+      <h1 class="title">Lost in the dimension.</h1>
+      <p class="lead">This page doesn't exist — but the way back is right here.</p>
+      <a class="btn btn--primary" href="/">
+        Return home{' '}
+        <svg class="i i--arrow" aria-hidden="true">
+          <use href="#i-arrow"></use>
+        </svg>
+      </a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,85 @@
+---
+const { station, projects } = Astro.props;
+const studies = projects.every((p) => p.data.kind === 'study');
+---
+
+<section
+  class="station works"
+  id="works"
+  data-station="works"
+  aria-labelledby="works-title"
+  style={`--count:${projects.length}`}
+>
+  <div class="works__sticky">
+    <div class="container works__stage">
+      <div class="station__scrim" aria-hidden="true"></div>
+      <header class="works__head">
+        <p class="label station-label" data-reveal>
+          <span class="station-label__index">{station.index}</span>
+          <span class="station-label__name">Works · {studies ? 'Studies' : 'Projects'}</span>
+        </p>
+        <h2 class="title" id="works-title" data-reveal>
+          {studies ? 'Studies in craft.' : 'Selected work.'}
+        </h2>
+        {studies && (
+          <p class="lead" data-reveal>
+            Self-initiated concepts that explore design, technology and digital experiences. Real client work will join
+            them here.
+          </p>
+        )}
+      </header>
+
+      <div class="works__list" data-works-list>
+        {projects.map((p, i) => (
+          <article class="work-card" data-work={i} aria-labelledby={`work-${p.id}`}>
+            {p.data.image && (
+              <div class="work-card__media">
+                <img
+                  src={p.data.image}
+                  alt={`Preview of the ${p.data.title} ${p.data.kind === 'study' ? 'concept' : 'project'}`}
+                  width="1600"
+                  height="1000"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+            <div class="work-card__meta">
+              <span class="label">{String(i + 1).padStart(2, '0')}</span>
+              <span class="tag">{p.data.kind === 'study' ? 'Concept study' : 'Project'}</span>
+              <span class="label">{p.data.category}</span>
+            </div>
+            <h3 class="work-card__title" id={`work-${p.id}`}>
+              {p.data.title}
+            </h3>
+            <p class="work-card__summary">{p.data.summary}</p>
+            <a class="link work-card__open" href={`/work/${p.id}/`} data-work-open={i}>
+              View case study<span class="visually-hidden">: {p.data.title}</span>
+              <svg class="i" aria-hidden="true">
+                <use href="#i-arrow"></use>
+              </svg>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <div class="works__nav" role="group" aria-label="Choose a study">
+        <div class="works__steps">
+          {projects.map((p, i) => (
+            <button class="works__step" type="button" data-work-step={i} aria-current={i === 0 ? 'true' : 'false'}>
+              {String(i + 1).padStart(2, '0')}
+              <span class="visually-hidden">: {p.data.title}</span>
+            </button>
+          ))}
+        </div>
+        <span class="label">← → to move</span>
+      </div>
+
+      {studies && (
+        <p class="works__note">
+          All studies shown are self-initiated concepts created for learning and demonstration — not paid client work.
+        </p>
+      )}
+    </div>
+  </div>
+</section>

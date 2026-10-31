@@ -1,0 +1,35 @@
+---
+import site from '../../content/site.json';
+---
+
+<section class="station hero container" id="home" data-station="home" aria-labelledby="hero-name">
+  <div class="hero__top">
+    <p class="hero__eyebrow label">
+      <span>{site.role}</span>
+      {site.availability && <span class="hero__status">{site.availability}</span>}
+    </p>
+    <h1 class="hero__name" id="hero-name">
+      {site.name}
+      <span class="visually-hidden">, {site.role.toLowerCase()}</span>
+    </h1>
+  </div>
+  <div class="hero__bottom">
+    <p class="hero__headline" style="--d:0">
+      {site.headline}
+    </p>
+    <p class="hero__intro" style="--d:1">
+      {site.intro}
+    </p>
+    <div class="hero__actions" style="--d:2">
+      <a class="btn btn--primary" href="#works" data-magnetic>
+        View work{' '}
+        <svg class="i i--arrow" aria-hidden="true">
+          <use href="#i-arrow"></use>
+        </svg>
+      </a>
+      <a class="btn btn--secondary" href="#contact" data-magnetic>
+        Start a project
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,188 @@
+---
+import site from '../content/site.json';
+
+const { stations, projects, askEnabled = false } = Astro.props;
+const destinations = [
+  ...stations.map((s) => ({
+    num: s.index,
+    label: s.title,
+    hint: s.label,
+    href: `/#${s.id}`,
+    keys: `${s.label} ${s.title}`,
+  })),
+  ...projects.map((p, i) => ({
+    num: `S${i + 1}`,
+    label: p.data.title,
+    hint: p.data.kind === 'study' ? 'Study' : 'Project',
+    href: `/work/${p.id}/`,
+    keys: `${p.data.category} ${p.data.brand ?? ''} work case study`,
+    small: true,
+  })),
+  {
+    num: '↗',
+    label: 'Email Siddiq',
+    hint: 'Mail',
+    href: `mailto:${site.contact.email}`,
+    keys: 'contact email mail',
+    small: true,
+  },
+  {
+    num: '↗',
+    label: 'Chat on WhatsApp',
+    hint: 'WhatsApp',
+    href: site.contact.whatsapp.url,
+    external: true,
+    keys: 'contact whatsapp phone message',
+    small: true,
+  },
+  {
+    num: '⧉',
+    label: 'Copy email address',
+    hint: 'Copy',
+    action: 'copy-email',
+    keys: 'contact email copy',
+    small: true,
+  },
+  ...(askEnabled
+    ? [
+        {
+          num: '?',
+          label: 'Ask about my work',
+          hint: 'AI',
+          action: 'ask',
+          keys: 'assistant ai question chat',
+          small: true,
+        },
+      ]
+    : []),
+  { num: '§', label: 'Privacy', hint: 'Page', href: '/privacy', keys: 'privacy data cookies', small: true },
+];
+---
+
+<dialog class="index" data-index aria-label="Index">
+  <div class="index__head">
+    <div class="container">
+      <span class="label">Index</span>
+      <button class="icon-btn" type="button" data-index-close aria-label="Close index">
+        <svg class="i" aria-hidden="true">
+          <use href="#i-close"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="container index__inner">
+    <div>
+      <div class="index__search">
+        <svg class="i" aria-hidden="true">
+          <use href="#i-search"></use>
+        </svg>
+        <label class="visually-hidden" for="index-q">
+          Search the site
+        </label>
+        <input
+          id="index-q"
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Go to…"
+          role="combobox"
+          aria-expanded="true"
+          aria-controls="index-results"
+          aria-autocomplete="list"
+          data-index-input
+        />
+      </div>
+      <ul class="index__results" id="index-results" role="listbox" aria-label="Destinations" data-index-results>
+        {destinations.map((d, i) => (
+          <li
+            role="option"
+            id={`index-opt-${i}`}
+            class:list={{ 'is-small': d.small }}
+            data-keys={`${d.label} ${d.keys}`.toLowerCase()}
+            aria-selected="false"
+          >
+            {d.action ? (
+              <button type="button" data-index-action={d.action} tabindex="-1">
+                <span class="index__num">{d.num}</span>
+                <span>{d.label}</span>
+                <span class="index__hint">{d.hint}</span>
+              </button>
+            ) : (
+              <a href={d.href} tabindex="-1" {...(d.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                <span class="index__num">{d.num}</span>
+                <span>{d.label}</span>
+                <span class="index__hint">{d.hint}</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+      <p class="index__empty" data-index-empty hidden>
+        Nothing matches. Try “work”, “skills” or “contact”.
+      </p>
+      <p class="visually-hidden" aria-live="polite" data-index-status></p>
+    </div>
+
+    <div class="index__side">
+      <section aria-labelledby="settings-title">
+        <h2 class="label" id="settings-title">
+          Experience settings
+        </h2>
+        <div class="settings">
+          <div class="setting">
+            <span class="setting__text" id="set-motion-label">
+              Reduce motion <small>Calmer transitions, no camera travel</small>
+            </span>
+            <button
+              class="switch"
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-labelledby="set-motion-label"
+              data-setting="motion"
+            ></button>
+          </div>
+          <div class="setting">
+            <span class="setting__text" id="set-world-label">
+              3D world <small>Turn off for a lighter, static view</small>
+            </span>
+            <button
+              class="switch"
+              type="button"
+              role="switch"
+              aria-checked="true"
+              aria-labelledby="set-world-label"
+              data-setting="world"
+            ></button>
+          </div>
+          <div class="setting" data-fullscreen-row hidden>
+            <span class="setting__text" id="set-full-label">
+              Immersive mode <small>Fullscreen · Esc to exit</small>
+            </span>
+            <button
+              class="switch"
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-labelledby="set-full-label"
+              data-setting="fullscreen"
+            ></button>
+          </div>
+        </div>
+      </section>
+      <section class="index__contact" aria-labelledby="index-contact-title">
+        <h2 class="label" id="index-contact-title">
+          Direct
+        </h2>
+        <a class="link" href={`mailto:${site.contact.email}`}>
+          {site.contact.email}
+        </a>
+        <a class="link" href={site.contact.whatsapp.url} target="_blank" rel="noopener noreferrer">
+          WhatsApp · {site.contact.whatsapp.display}
+          <span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </section>
+      <p class="index__hint">↑ ↓ to move · Enter to go · Esc to close</p>
+    </div>
+  </div>
+</dialog>

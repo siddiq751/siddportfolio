@@ -1,0 +1,147 @@
+/* ==========================================================================
+   Motion — "light before form". Respects the OS reduced-motion setting and
+   the in-site Motion toggle (html[data-motion="reduced"]).
+   ========================================================================== */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The name gathers onto the horizon: letters arrive spread along the line of light and
+   settle into place. It only ever narrows, so the first paint stays the largest (good LCP). */
+@keyframes name-gather {
+  from {
+    letter-spacing: 0.32em;
+    opacity: 0.25;
+  }
+}
+
+@keyframes horizon-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Scroll reveals (only when scripting is available, so content never hides without JS). */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion='reduced']) [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s ease,
+      transform var(--t-reveal) var(--ease-arrive);
+    transition-delay: calc(var(--d, 0) * 80ms);
+  }
+
+  :root:not([data-motion='reduced']) [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Light leads: a hairline of light passes over titles before they settle. */
+  :root:not([data-motion='reduced']) .title[data-reveal] {
+    background: linear-gradient(100deg, var(--text) 0 45%, #fff3e6 50%, var(--text) 55% 100%) 100% 0 / 300% 100%
+      no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition:
+      opacity 0.9s ease,
+      transform var(--t-reveal) var(--ease-arrive),
+      background-position 1.8s var(--ease-arrive) 0.1s;
+  }
+
+  :root:not([data-motion='reduced']) .title[data-reveal].is-visible {
+    background-position: 0% 0;
+  }
+
+  /* First visit: the entrance plays once per session (data-intro is set by /boot.js). */
+  :root[data-intro='play']:not([data-motion='reduced']) .hero__name {
+    animation: name-gather 1.8s var(--ease-arrive) both;
+  }
+
+  :root[data-intro='play']:not([data-motion='reduced']) .hero__eyebrow,
+  :root[data-intro='play']:not([data-motion='reduced']) .hero__bottom > * {
+    animation: rise 1s var(--ease-arrive) both;
+    animation-delay: calc(1.5s + var(--d, 0) * 90ms);
+  }
+
+  :root[data-intro='play']:not([data-motion='reduced']) .topbar,
+  :root[data-intro='play']:not([data-motion='reduced']) .rail {
+    animation: fade 1s ease 1.6s both;
+  }
+
+  :root[data-intro='play']:not([data-motion='reduced']) .world__horizon {
+    animation: horizon-draw 1.4s var(--ease-arrive) both;
+  }
+
+  :root[data-intro='skip'] .hero__bottom > *,
+  :root[data-intro='skip'] .hero__eyebrow {
+    animation: rise 0.7s var(--ease-arrive) both;
+    animation-delay: calc(var(--d, 0) * 60ms);
+  }
+}
+
+/* Skipping the intro jumps every entrance animation to its end. */
+:root.intro-skipped * {
+  animation-delay: 0s !important;
+  animation-duration: 0.01ms !important;
+}
+
+/* Reduced motion — from the OS or the in-site toggle. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+:root[data-motion='reduced'] {
+  scroll-behavior: auto;
+}
+
+:root[data-motion='reduced'] *,
+:root[data-motion='reduced'] *::before,
+:root[data-motion='reduced'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+}
+
+/* Cross-document page transitions (progressive: browsers without support just navigate). */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: var(--ease-arrive);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

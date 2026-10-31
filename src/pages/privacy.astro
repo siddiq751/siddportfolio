@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../content/site.json';
+
+const askEnabled = import.meta.env.PUBLIC_ASK_ENABLED === 'true';
+---
+
+<Base
+  paper
+  title={`Privacy | ${site.name}`}
+  description={`How ${site.name}'s portfolio handles the information you share.`}
+>
+  <article class="doc container">
+    <a class="link doc__back" href="/">
+      <svg class="i" aria-hidden="true">
+        <use href="#i-arrow"></use>
+      </svg>{' '}
+      Back to the dimension
+    </a>
+    <header class="doc__head">
+      <h1 class="doc__title">Privacy</h1>
+      <p class="doc__intro">Short version: no cookies, no tracking, and your messages are only used to reply to you.</p>
+    </header>
+    <div class="prose">
+      <h2>Contact form</h2>
+      <p>
+        The form asks for your name, email, project type, an optional budget and your message. It's used only to reply
+        to your enquiry. Depending on how the site is configured, sending either opens your own email app with the
+        message pre-filled, or delivers it to {site.name}'s inbox through a form-delivery service (Web3Forms or
+        Formspree) that processes the message on {site.name}'s behalf.
+      </p>
+      <h2>Email and WhatsApp</h2>
+      <p>Links to email and WhatsApp open those services directly; their own privacy policies apply.</p>
+      {askEnabled && (
+        <>
+          <h2>AI assistant</h2>
+          <p>
+            Questions you type into the assistant are sent to Anthropic's Claude API to generate an answer from this
+            site's published information. Message text isn't stored by this site. Please don't share personal or
+            sensitive information there.
+          </p>
+        </>
+      )}
+      <h2>Settings stored on your device</h2>
+      <p>
+        If you change the motion or 3D settings, that preference is saved in your browser's local storage so it's
+        remembered next time. Nothing is sent anywhere.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        Email <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+      </p>
+    </div>
+  </article>
+</Base>

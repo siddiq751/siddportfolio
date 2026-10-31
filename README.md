@@ -1,158 +1,187 @@
-# Siddiq — Freelance Web Developer Portfolio
+# Siddiq — The Digital Dimension
 
-A single-page portfolio with a real-time, interactive 3D hero built with Three.js.
-Minimal, Apple-inspired, fully responsive and accessible — with no backend required.
+An immersive portfolio: a dark, architectural 3D world (Three.js) that you travel through by
+scrolling, with every piece of content in fast, accessible HTML on top of it.
 
-- **Stack:** HTML5 · CSS3 · vanilla JavaScript (ES modules) · Three.js · Vite
-- **Runtime dependency:** `three` only. Dev dependency: `vite`.
-- **Fonts:** Geist + Geist Mono, self-hosted (SIL Open Font License, see `public/fonts/`).
+- **The concept — "Horizon":** an infinite stone plane, one line of warm light, and _the Core_ —
+  a black chrome sphere that rises on the horizon in eclipse. Scrolling moves the camera through
+  five stations (Core → Origin → Instruments → Works → Transmission) and through a day of light.
+  The horizon never moves on screen; the world moves around it.
+- **Stack:** Astro 7 (static output, no UI framework) · vanilla JavaScript · Three.js 0.187.
+  One optional Vercel Function for the AI assistant.
+- **Fonts:** Archivo (variable width + weight, subset to what's used) and Geist Mono, self-hosted (OFL).
+
+> v1 of the site (light, Vite) is preserved on the `main` branch at commit `499ab59`.
 
 ---
 
 ## Quick start
 
-Requires **Node.js 20.19+** (or 22.12+).
+Requires **Node.js 22.12+** (Astro is pinned to 7.3 so it runs on Node 22.12–22.22).
 
 ```bash
-npm install        # install dependencies
-npm run dev        # local dev server → http://localhost:5173
-npm run build      # production build → dist/
-npm run preview    # serve the production build → http://localhost:4173
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # static site → dist/
+npm run preview    # serve dist/ (a managed server: `npx astro preview stop` stops it)
 ```
+
+| Script             | What it does                                                                                 |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `npm run lint`     | ESLint + Prettier check                                                                      |
+| `npm test`         | Unit tests (Vitest): content, form rules, assistant guardrails, CSP hash                     |
+| `npm run test:e2e` | Browser tests (Playwright, desktop + mobile) — builds and serves the site itself             |
+| `npm run check`    | All of the above + build                                                                     |
+| `npm run assets`   | Regenerates study screenshots, Open Graph images and icons (needs `npm run preview` running) |
 
 ---
 
-## Project structure
+## Editing content (one source of truth)
 
-```
-├── index.html              All page content, case-study templates, SEO meta
-├── vite.config.js          Build config + absolute-URL injection for OG tags
-├── vercel.json             Cache + security headers for Vercel
-├── .env.example            Contact-form settings (copy to .env)
-├── public/
-│   ├── favicon.svg / favicon-32.png / apple-touch-icon.png
-│   ├── og-image.jpg        1200×630 social preview (rendered from the real hero)
-│   ├── robots.txt
-│   └── fonts/              Geist + Geist Mono (Latin subset) + licence
-├── css/
-│   ├── style.css           Design tokens, base styles, every component (mobile-first)
-│   ├── responsive.css      Tablet / desktop / large-screen layouts
-│   └── animations.css      Entrances, reveals, hover states, reduced-motion rules
-└── js/
-    ├── main.js             Entry: initialises modules, lazy-loads the 3D scenes
-    ├── config.js           Contact email, WhatsApp URL, form provider selection
-    ├── utils.js            Shared helpers (WebGL check, idle/viewport loaders)
-    ├── navigation.js       Sticky nav, active section, dark-section styling, mobile menu
-    ├── animations.js       Scroll reveals, hero drift, parallax, magnetic buttons, card tilt
-    ├── projects.js         Case-study dialog
-    ├── contact.js          Form validation, states and delivery
-    ├── hero-3d.js          Hero scene: black chrome sphere, pearl, orbital rings, platform
-    ├── about-3d.js         About scene: glass cube, chrome ring, pearl
-    └── three/studio.js     Renderer, baked studio lighting, render loop, perf guard
+Everything visitors read — and everything the AI assistant may say — comes from two places:
+
+- **`src/content/site.json`** — name, role, availability, headline, about, skills, services,
+  process, contact details, links, CV. Only verified information belongs here.
+- **`src/content/projects/*.md`** — one file per project (frontmatter only).
+
+### Adding a real project
+
+```yaml
+---
+title: My Real Project
+kind: project # 'project' = real work; 'study' = self-initiated concept
+category: Business Website
+order: 1 # position in the Works hall
+summary: One line about it.
+overview: …
+objective: …
+features: [Feature one, Feature two]
+stack: [HTML5, CSS3, JavaScript] # only what you actually used
+image: /works/my-project.jpg # 1600×1000 screenshot in public/works/
+liveUrl: https://… # a real project needs liveUrl or repoUrl (enforced at build)
+repoUrl: https://github.com/…
+year: 2026
+contactType: Business Website
+---
 ```
 
-There is no `assets/images` or `assets/models` folder: every 3D object is generated in code,
-and the project previews are live HTML/CSS mock-ups that stay sharp at any size.
+Real projects are labelled **Project**; studies are always labelled **Concept study** with their
+fictional-brand note. Once a real project exists, the Works heading switches from
+"Studies in craft." to "Selected work." automatically. Add `my-project-og.jpg` (1200×630) next to
+the image for the case study's social preview.
+
+### Designed, waiting for your information
+
+Two more stations — **Path** (experience, education, certifications) and **Signal** (live GitHub
+activity) — plus a CV page and a photo in Origin are part of the approved design but deliberately
+not built yet: they need verified data first. They slot into `src/lib/stations.js` with their
+components.
 
 ---
 
 ## Contact form
 
-The form validates input and has loading, success and error states. How messages are delivered
-depends on configuration — **it never pretends to send**.
+Validation, loading, success and error states are built in. Delivery depends on configuration —
+the form never pretends to send:
 
-| Setup | What happens on submit |
-|---|---|
-| **No key set (default)** | The visitor's email app opens with a pre-filled message to `siddiqmd751@gmail.com`. The page explains this clearly. |
-| **Web3Forms key set** | The message is sent to your inbox via Web3Forms; the visitor sees a real success or error state. |
-| **Formspree ID set** | Same as above, via Formspree. |
+| Setup                         | On submit                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------- |
+| Nothing set (default)         | Opens the visitor's email app with the message pre-filled                          |
+| `PUBLIC_WEB3FORMS_ACCESS_KEY` | Delivered to your inbox via [Web3Forms](https://web3forms.com) (free, recommended) |
+| `PUBLIC_FORMSPREE_ID`         | Delivered via [Formspree](https://formspree.io)                                    |
 
-### Option A — Web3Forms (recommended, free)
+Set the variable in `.env` locally and in Vercel → Settings → Environment Variables, then redeploy.
+After the first deploy, **send yourself one real test message**.
 
-1. Go to <https://web3forms.com>, enter `siddiqmd751@gmail.com`, and copy the access key emailed to you.
-2. Locally: `cp .env.example .env` and set `VITE_WEB3FORMS_ACCESS_KEY=your-key`.
-3. On Vercel: **Project → Settings → Environment Variables** → add `VITE_WEB3FORMS_ACCESS_KEY`, then redeploy.
+---
 
-The access key is designed to be public (it only allows sending to your own inbox), so it is safe in client code.
+## AI assistant ("Ask") — optional, off by default
 
-### Option B — Formspree
+Answers questions about your work **only** from facts the build generates from `src/content`
+(`/assistant-facts.json`). It refuses to guess anything that isn't there (experience, clients,
+prices…) and links to the section it used.
 
-1. Create a form at <https://formspree.io> — the endpoint looks like `https://formspree.io/f/abcdwxyz`.
-2. Set `VITE_FORMSPREE_ID=abcdwxyz` in `.env` and in Vercel's environment variables.
+To enable on Vercel:
 
-If both are set, Web3Forms is used. A hidden honeypot field quietly drops basic spam bots.
+```
+PUBLIC_ASK_ENABLED=true     # shows the Ask button
+ASK_ENABLED=true            # lets the API answer
+ANTHROPIC_API_KEY=…         # server-side only
+ASK_MODEL=                  # empty = claude-opus-5-5; claude-haiku-5-5 is far cheaper
+```
+
+- **Model:** Claude Opus 5.5 by default at `low` effort, with server-side refusal fallback on.
+  Claude Haiku 5.5 is a sensible, much cheaper choice for this kind of Q&A — your call.
+- **Cost controls:** prompt caching on the fixed facts, short answers, input limits (500 chars,
+  last 6 turns), a per-visitor rate limit and a daily cap. Those limits live in one serverless
+  instance's memory, so **also set a monthly spend limit in the Claude Console** (and optionally a
+  Vercel Firewall rate-limit rule on `/api/ask`).
+- **Privacy:** message text isn't logged by the site; the privacy page describes the assistant
+  whenever it's enabled.
+- **Before launch:** ask it 30–50 test questions, including ones it must refuse.
+- `api/ask.js` is a standalone Vercel Function — confirm `/api/ask` responds after the first deploy.
+
+---
+
+## The 3D world
+
+- Home page only; loads after first paint when the browser is idle, and builds in small steps.
+- **Quality tiers** (`src/scripts/world/tiers.js`): high-end desktop, laptop, mobile — and a CSS
+  still with no Three.js download for Data Saver, software GPUs, no WebGL 2, or "3D off".
+- **Index → Experience settings** (⌘K / Ctrl+K): _Reduce motion_ (no intro, no camera travel),
+  _3D world_ on/off (remembered), _Immersive mode_ (fullscreen, desktop).
+- Pauses when the tab is hidden or an overlay is open, halves its frame rate after 6 s without
+  input, lowers resolution on slow GPUs, and recovers from GPU context loss.
+- Fully procedural — no models or textures to download except the project screenshots.
+
+---
+
+## Security
+
+`vercel.json` sets a strict Content-Security-Policy (no inline scripts except the boot script,
+allowed by its SHA-256 hash), HSTS, `frame-ancestors 'none'`, Permissions-Policy and more.
+
+**If you edit `public/boot.js`, update its hash in `vercel.json`** — `npm test` fails until you do.
+Recompute with:
+
+```bash
+node -e "console.log(require('crypto').createHash('sha256').update(require('fs').readFileSync('public/boot.js')).digest('base64'))"
+```
+
+`npm audit --omit=dev` reports no known vulnerabilities in production dependencies (an npm
+`overrides` entry pins a nested `zod` copy in Astro's tree to a patched release). ESLint's own
+dependencies carry moderate advisories that affect development tooling only.
 
 ---
 
 ## Deploying
 
-### 1. Push to GitHub
+1. **GitHub:** create an empty repository, then
+   ```bash
+   git remote add origin https://github.com/<you>/siddiq-portfolio.git
+   git push -u origin main v2-dimension
+   ```
+   Open a pull request from `v2-dimension` into `main` and merge when you're happy.
+2. **Vercel:** import the repository — it detects Astro (build `npm run build`, output `dist`).
+   Add the environment variables above. Every pull request gets a preview URL; every merge to
+   `main` deploys; any earlier deployment can be promoted back instantly (rollback).
+3. **Domain:** add it in Vercel (HTTPS is automatic) and set `SITE_URL=https://yourdomain` so
+   canonical URLs, social previews and the sitemap use it.
+4. **CI:** `.github/workflows/ci.yml` runs lint, unit tests, build, Playwright and Lighthouse
+   budgets (≥ 95 performance, accessibility, SEO) on every pull request. Dependabot opens update PRs.
 
-```bash
-git init
-git add .
-git commit -m "Initial portfolio"
-git branch -M main
-# Create an empty repo on github.com first (no README), then:
-git remote add origin https://github.com/<your-username>/siddiq-portfolio.git
-git push -u origin main
-```
-
-`.gitignore` already excludes `node_modules`, `dist` and `.env`.
-
-### 2. Deploy on Vercel
-
-1. Sign in at <https://vercel.com> with GitHub → **Add New… → Project** → import the repository.
-2. Vercel detects **Vite** automatically (build `npm run build`, output `dist`). Keep the defaults.
-3. Add the contact-form environment variable (see above) if you have one.
-4. Click **Deploy**. Every push to `main` redeploys automatically.
-
-Canonical and Open Graph URLs become absolute automatically on Vercel (from
-`VERCEL_PROJECT_PRODUCTION_URL`). With a custom domain, set `SITE_URL=https://yourdomain.com`
-as an environment variable so social previews use it.
+Optional later: Vercel Web Analytics / Speed Insights (cookie-free) and a free uptime monitor.
 
 ---
 
-## Editing content
+## Measured quality (local production build)
 
-- **Text, projects, services, skills:** all in `index.html`.
-- **Case studies:** the `<template id="case-…">` blocks at the bottom of `index.html`. The desktop
-  preview reuses the card's mock-up automatically.
-- **Real screenshots:** when a project is built, you can replace a `.mock` block with an
-  `<img>` (keep `alt` text descriptive) — the frames and hover effects still work.
-- **Contact details:** `index.html` and `js/config.js`.
-- **Colours, type scale, spacing:** CSS custom properties at the top of `css/style.css`.
+| Page             | Performance | Accessibility | Best practices | SEO |
+| ---------------- | ----------- | ------------- | -------------- | --- |
+| Home — mobile    | 97–98       | 100           | 100            | 100 |
+| Home — desktop   | 100         | 100           | 100            | 100 |
+| Privacy — mobile | 100         | 100           | 100            | 100 |
 
-Please keep the honesty rules: projects are labelled **Concept Project**, there are no invented
-clients, testimonials or statistics, and the skills list should only include tools you actually use.
-
----
-
-## How the 3D works
-
-- **Procedural & asset-free:** spheres, rings, the lathe-turned platform and the rounded glass cube
-  are generated in code — no model or texture downloads.
-- **Studio lighting:** a graded room with emissive softboxes is baked once into a PMREM
-  environment map, giving chrome and glass crisp reflections without real-time reflection passes.
-  Shadows are baked radial textures, not shadow maps.
-- **Interaction:** the camera orbits subtly with the cursor (so reflections shift), the scene can be
-  dragged horizontally (touch-friendly: vertical swipes still scroll), hovering the black sphere
-  quickens the orbits, and scrolling tilts the composition.
-- **Performance:** Three.js loads in its own chunk *after* first paint; the About scene loads only
-  when you scroll near it. Shaders compile asynchronously. Rendering stops when a scene is off-screen
-  or the tab is hidden, pixel ratio is capped (1.5 on phones, 1.75 on desktop) and drops
-  automatically if frames are slow.
-- **Fallbacks:** a CSS rendition of each composition is shown while loading and stays in place if
-  WebGL 2 is unavailable or the GPU context is lost. With *Reduce Motion* enabled, scenes render a
-  single still frame and all page animations are disabled.
-
----
-
-## Quality checks (at time of build)
-
-- Lighthouse — mobile: Performance 98 · Accessibility 100 · Best Practices 100 · SEO 100;
-  desktop: 100 · 100 · 100 · 100 (CLS 0).
-- Tested at 320, 375, 430, 768, 1024, 1440 and 1920 px widths with no horizontal overflow.
-- Automated browser checks covered navigation, CTAs, mobile menu (incl. Esc and focus return),
-  case-study dialogs, form validation and all delivery states, WhatsApp/email links,
-  3D interaction, render pausing, reduced motion and the no-WebGL fallback — with no console errors.
+Lighthouse in headless Chrome against `npm run preview`; mobile uses simulated slow 4G and 4× CPU
+slowdown. Home on mobile: LCP 2.3 s, TBT 60–140 ms, CLS 0.014. These are lab numbers from one
+machine — check real-visitor data in Vercel Speed Insights after launch.

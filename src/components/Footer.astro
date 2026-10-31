@@ -1,0 +1,62 @@
+---
+import site from '../content/site.json';
+import Mark from './Mark.astro';
+
+const { stations } = Astro.props;
+const links = Object.entries(site.links).filter(([, url]) => url);
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="/" aria-label={`${site.name} — home`}>
+          <Mark />
+          <span>{site.name.toUpperCase()}</span>
+        </a>
+        <p>Thoughtfully designed, carefully built websites for businesses and individuals.</p>
+      </div>
+      <nav class="footer__col" aria-label="Footer">
+        <h2 class="label">Stations</h2>
+        <ul role="list">
+          {stations.map((s) => (
+            <li>
+              <a href={`/#${s.id}`}>{s.title}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="footer__col">
+        <h2 class="label">Get in touch</h2>
+        <ul role="list">
+          <li>
+            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+          </li>
+          <li>
+            <a href={site.contact.whatsapp.url} target="_blank" rel="noopener noreferrer">
+              WhatsApp · {site.contact.whatsapp.display}
+              <span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </li>
+          {links.map(([name, url]) => (
+            <li>
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                {name === 'github' ? 'GitHub' : name === 'linkedin' ? 'LinkedIn' : name}
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="footer__horizon" aria-hidden="true"></div>
+    <div class="footer__bottom">
+      <p>
+        © <span data-year>{new Date().getFullYear()}</span> {site.name}. All rights reserved.
+      </p>
+      <p>
+        <a href="/privacy">Privacy</a> · <a href="#top">Back to top ↑</a>
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import site from '../content/site.json';
+import { getStations } from '../lib/stations.js';
+import Hero from '../components/stations/Hero.astro';
+import Origin from '../components/stations/Origin.astro';
+import Instruments from '../components/stations/Instruments.astro';
+import Works from '../components/stations/Works.astro';
+import Contact from '../components/stations/Contact.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const stations = Object.fromEntries(getStations(site).map((s) => [s.id, s]));
+---
+
+<Base home>
+  <Hero />
+  <Origin station={stations.origin} />
+  <Instruments station={stations.instruments} />
+  <Works station={stations.works} projects={projects} />
+  <Contact station={stations.contact} />
+</Base>

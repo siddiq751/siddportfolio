@@ -1,18 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <radialGradient id="s" cx="38%" cy="32%" r="70%">
-      <stop offset="0" stop-color="#6a6a6a"/>
-      <stop offset=".28" stop-color="#1c1c1c"/>
-      <stop offset=".75" stop-color="#050505"/>
-      <stop offset="1" stop-color="#2b2b2b"/>
+    <radialGradient id="c" cx="50%" cy="50%" r="50%">
+      <stop offset=".6" stop-color="#ff8a3d"/>
+      <stop offset=".78" stop-color="#ff8a3d" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="p" cx="35%" cy="30%" r="75%">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset=".6" stop-color="#ecebe7"/>
-      <stop offset="1" stop-color="#bdbcb7"/>
+    <radialGradient id="d" cx="38%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#45474a"/>
+      <stop offset=".55" stop-color="#0b0c0c"/>
+      <stop offset="1" stop-color="#050606"/>
     </radialGradient>
+    <clipPath id="h"><rect width="64" height="42"/></clipPath>
   </defs>
-  <circle cx="30" cy="34" r="22" fill="url(#s)"/>
-  <ellipse cx="30" cy="34" rx="29" ry="9" fill="none" stroke="#9a9a9a" stroke-width="1.6" transform="rotate(-14 30 34)"/>
-  <circle cx="54" cy="25" r="6.5" fill="url(#p)"/>
+  <rect width="64" height="64" rx="14" fill="#0b0c0c"/>
+  <circle cx="32" cy="33" r="21" fill="url(#c)" clip-path="url(#h)"/>
+  <circle cx="32" cy="33" r="14" fill="url(#d)" clip-path="url(#h)"/>
+  <rect x="7" y="41.5" width="50" height="2" fill="#ff8a3d"/>
 </svg>

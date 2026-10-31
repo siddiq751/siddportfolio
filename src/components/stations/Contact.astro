@@ -1,0 +1,106 @@
+---
+import site from '../../content/site.json';
+import ContactForm from '../ContactForm.astro';
+
+const { station } = Astro.props;
+---
+
+<section class="station station--contact" id="contact" data-station="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="collab">
+      <div class="collab__block">
+        <p class="label station-label" data-reveal>
+          <span class="station-label__index">{station.index}</span>
+          <span class="station-label__name">Transmission · Contact</span>
+        </p>
+        <h2 class="title" id="collab-title" data-reveal>
+          Ways to work <span class="soft">together.</span>
+        </h2>
+      </div>
+      <ul class="services" role="list" aria-labelledby="collab-title" data-reveal>
+        {site.services.map((s) => (
+          <li class="service">
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+            <a class="link" href="#contact-form" data-project-type={s.type}>
+              Discuss this{' '}
+              <svg class="i" aria-hidden="true">
+                <use href="#i-arrow" />
+              </svg>
+              <span class="visually-hidden">: {s.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="collab__block">
+        <h3 class="label">A simple process</h3>
+        <ol class="process" role="list" data-reveal>
+          {site.process.map((step, i) => (
+            <li>
+              <span class="label">{String(i + 1).padStart(2, '0')}</span>
+              <h4>{step.title}</h4>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+
+    <div class="transmission">
+      <div class="transmission__intro station__content">
+        <h2 class="title transmission__title" id="contact-title" data-reveal>
+          Have an idea? <span class="soft">Let's build something great.</span>
+        </h2>
+        <p class="lead" data-reveal>
+          Tell me what you're planning. I'd love to explore how we can bring it to life.
+        </p>
+      </div>
+      <div data-reveal>
+        <ContactForm />
+      </div>
+      <div class="direct" data-reveal>
+        <div class="direct__item">
+          <span class="label">Email</span>
+          <a class="direct__value" href={`mailto:${site.contact.email}?subject=Project%20enquiry`}>
+            {site.contact.email}
+          </a>
+          <div class="direct__actions">
+            <a class="btn btn--secondary btn--sm" href={`mailto:${site.contact.email}?subject=Project%20enquiry`}>
+              <svg class="i" aria-hidden="true">
+                <use href="#i-mail"></use>
+              </svg>{' '}
+              Send an email
+            </a>
+            <button class="btn btn--secondary btn--sm" type="button" data-copy-email={site.contact.email}>
+              <svg class="i" aria-hidden="true">
+                <use href="#i-copy"></use>
+              </svg>{' '}
+              <span data-copy-label>Copy</span>
+            </button>
+          </div>
+        </div>
+        <div class="direct__item">
+          <span class="label">WhatsApp</span>
+          <a class="direct__value" href={site.contact.whatsapp.url} target="_blank" rel="noopener noreferrer">
+            {site.contact.whatsapp.display}
+            <span class="visually-hidden"> (opens WhatsApp in a new tab)</span>
+          </a>
+          <div class="direct__actions">
+            <a
+              class="btn btn--secondary btn--sm"
+              href={site.contact.whatsapp.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg class="i" aria-hidden="true">
+                <use href="#i-chat"></use>
+              </svg>{' '}
+              Chat on WhatsApp
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

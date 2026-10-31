@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Frames from '../../components/Frames.astro';
+import MockCoaching from '../../components/mocks/MockCoaching.astro';
+import MockFolio from '../../components/mocks/MockFolio.astro';
+import MockEmber from '../../components/mocks/MockEmber.astro';
+import site from '../../content/site.json';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+const p = project.data;
+const isStudy = p.kind === 'study';
+const Mock = { coaching: MockCoaching, folio: MockFolio, ember: MockEmber }[p.mock];
+const jsonLd = [
+  {
+    '@type': 'CreativeWork',
+    name: p.title,
+    description: p.summary,
+    genre: p.category,
+    creativeWorkStatus: isStudy ? 'Concept' : 'Published',
+    author: { '@type': 'Person', name: site.name },
+    ...(p.liveUrl ? { url: p.liveUrl } : {}),
+  },
+];
+---
+
+<Base
+  paper
+  title={`${p.title} — ${isStudy ? 'Concept study' : 'Project'} | ${site.name}`}
+  description={p.summary}
+  type="article"
+  image={p.image ? p.image.replace(/\.(jpg|png|webp)$/, '-og.jpg') : undefined}
+  jsonLd={jsonLd}
+>
+  <article class="doc container">
+    <a class="link doc__back" href="/#works">
+      <svg class="i" aria-hidden="true">
+        <use href="#i-arrow"></use>
+      </svg>{' '}
+      Back to the dimension
+    </a>
+    <header class="doc__head">
+      <div class="doc__meta">
+        <span class="tag">{isStudy ? 'Concept study' : 'Project'}</span>
+        <span>{p.category}</span>
+        {p.year && <span>{p.year}</span>}
+      </div>
+      <h1 class="doc__title">{p.title}</h1>
+      <p class="doc__intro">{p.summary}</p>
+      {(p.liveUrl || p.repoUrl) && (
+        <div class="doc__cta">
+          {p.liveUrl && (
+            <a class="btn btn--primary" href={p.liveUrl} target="_blank" rel="noopener noreferrer">
+              Live site{' '}
+              <svg class="i i--ne" aria-hidden="true">
+                <use href="#i-ne" />
+              </svg>
+            </a>
+          )}
+          {p.repoUrl && (
+            <a class="btn btn--secondary" href={p.repoUrl} target="_blank" rel="noopener noreferrer">
+              Source code{' '}
+              <svg class="i i--ne" aria-hidden="true">
+                <use href="#i-ne" />
+              </svg>
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    {Mock && (
+      <div class="doc__previews">
+        <figure>
+          <Frames dark={p.mock === 'ember'} label={`Desktop layout of the ${p.title} concept, full page`}>
+            <Mock />
+          </Frames>
+          <figcaption>Desktop layout — full page</figcaption>
+        </figure>
+        <figure>
+          <Frames kind="phone" label={`Mobile layout of the ${p.title} concept`}>
+            <Mock mobile />
+          </Frames>
+          <figcaption>Mobile layout</figcaption>
+        </figure>
+      </div>
+    )}
+
+    <div class="doc__body">
+      <section class="doc__section">
+        <h2 class="label">Overview</h2>
+        <p>{p.overview}</p>
+      </section>
+      <section class="doc__section">
+        <h2 class="label">Design objective</h2>
+        <p>{p.objective}</p>
+      </section>
+      <section class="doc__section">
+        <h2 class="label">Key features</h2>
+        <ul class="doc__list" role="list">
+          {p.features.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+      </section>
+      <section class="doc__section">
+        <h2 class="label">{isStudy ? 'Intended stack' : 'Built with'}</h2>
+        <ul class="chips" role="list">
+          {p.stack.map((t) => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    {isStudy && (
+      <p class="doc__note">
+        Concept study — designed for practice and demonstration. {p.brandNote} This is not client work.
+      </p>
+    )}
+
+    <div class="doc__cta">
+      <a class="btn btn--primary" href={`/?type=${encodeURIComponent(p.contactType)}#contact`}>
+        Start a similar project{' '}
+        <svg class="i i--arrow" aria-hidden="true">
+          <use href="#i-arrow"></use>
+        </svg>
+      </a>
+    </div>
+
+    <nav class="doc__next" aria-label="Next study">
+      <span class="label">Next</span>
+      <a href={`/work/${next.id}/`}>{next.data.title} →</a>
+    </nav>
+  </article>
+</Base>
