@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Siddiq | Freelance Web Developer</title>
+    <meta name="description" content="Explore Siddiq's portfolio of modern, responsive and thoughtfully designed websites." />
+    <meta name="author" content="Siddiq" />
+    <meta name="theme-color" content="#F5F5F3" />
+    <meta name="color-scheme" content="light" />
+    <link rel="canonical" href="__SITE_URL__/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Siddiq" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="Siddiq | Freelance Web Developer" />
+    <meta property="og:description" content="Explore Siddiq's portfolio of modern, responsive and thoughtfully designed websites." />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Siddiq — Freelance Web Developer. A black chrome sphere with orbital rings above a floating platform." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Siddiq | Freelance Web Developer" />
+    <meta name="twitter:description" content="Explore Siddiq's portfolio of modern, responsive and thoughtfully designed websites." />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.jpg" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Siddiq",
+        "jobTitle": "Freelance Web Developer",
+        "email": "mailto:siddiqmd751@gmail.com",
+        "knowsAbout": ["HTML5", "CSS3", "JavaScript", "React", "Node.js", "Responsive web design"]
+      }
+    </script>
+    <script>document.documentElement.classList.add('js');</script>
+    <script type="module" src="/js/main.js"></script>
+  </head>
+
+  <body>
+    <!-- Icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 16 16"><path d="M8 13.5v-11M3.5 7 8 2.5 12.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-arrow-ne" viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 20 20"><rect x="2.5" y="4.5" width="15" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m3.5 6 6.5 5 6.5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 20 20"><path d="M10 3c4.14 0 7.5 2.9 7.5 6.5S14.14 16 10 16c-.9 0-1.76-.13-2.56-.38L3.5 17l1.1-3.06C3.25 12.8 2.5 11.22 2.5 9.5 2.5 5.9 5.86 3 10 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 16 16"><path d="m3.5 3.5 9 9m0-9-9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- 01 — Navigation -->
+    <header class="nav" data-nav>
+      <div class="nav__inner container">
+        <a class="nav__brand" href="#home" aria-label="Siddiq — back to top">SIDDIQ<span>.</span></a>
+
+        <nav class="nav__menu" aria-label="Primary">
+          <ul class="nav__links" data-nav-links>
+            <li><a href="#home" data-nav-link="home">Home</a></li>
+            <li><a href="#work" data-nav-link="work">Work</a></li>
+            <li><a href="#services" data-nav-link="services">Services</a></li>
+            <li><a href="#about" data-nav-link="about">About</a></li>
+            <li><a href="#contact" data-nav-link="contact">Contact</a></li>
+          </ul>
+          <span class="nav__indicator" aria-hidden="true" data-nav-indicator></span>
+        </nav>
+
+        <a class="btn btn--dark btn--sm nav__cta" href="#contact">
+          <span>Let's Talk</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-menu-toggle>
+          <span class="nav__toggle-line"></span>
+          <span class="nav__toggle-line"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+      <nav class="mobile-menu__inner container" aria-label="Mobile">
+        <ul class="mobile-menu__links">
+          <li style="--i:0"><a href="#home" data-nav-link="home"><span class="mobile-menu__num">01</span>Home</a></li>
+          <li style="--i:1"><a href="#work" data-nav-link="work"><span class="mobile-menu__num">02</span>Work</a></li>
+          <li style="--i:2"><a href="#services" data-nav-link="services"><span class="mobile-menu__num">03</span>Services</a></li>
+          <li style="--i:3"><a href="#about" data-nav-link="about"><span class="mobile-menu__num">04</span>About</a></li>
+          <li style="--i:4"><a href="#contact" data-nav-link="contact"><span class="mobile-menu__num">05</span>Contact</a></li>
+        </ul>
+        <div class="mobile-menu__foot" style="--i:5">
+          <a class="btn btn--dark btn--block" href="#contact">
+            <span>Let's Talk</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+          </a>
+          <a class="mobile-menu__mail" href="mailto:siddiqmd751@gmail.com">siddiqmd751@gmail.com</a>
+        </div>
+      </nav>
+    </div>
+
+    <main id="main" tabindex="-1">
+      <!-- 02 — Hero -->
+      <section class="hero" id="home" data-section="home" aria-labelledby="hero-title" data-hero>
+        <div class="container hero__grid">
+          <p class="eyebrow hero__eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Freelance Web Developer</p>
+
+          <h1 class="hero__title" id="hero-title">
+            <span class="w"><span style="--i:0">Building</span></span>
+            <span class="w"><span style="--i:1">digital</span></span>
+            <span class="w"><span style="--i:2">experiences</span></span>
+            <span class="w hero__soft"><span style="--i:3">that</span></span>
+            <span class="w hero__soft"><span style="--i:4">make</span></span>
+            <span class="w hero__soft"><span style="--i:5">businesses</span></span>
+            <span class="w"><span style="--i:6">stand</span></span>
+            <span class="w"><span style="--i:7">out.</span></span>
+          </h1>
+
+          <p class="hero__lead">I design and develop modern, responsive websites that help businesses and individuals establish a strong online presence.</p>
+
+          <div class="hero__actions">
+            <a class="btn btn--dark btn--lg" href="#contact" data-magnetic>
+              <span>Start a Project</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+            <a class="btn btn--ghost btn--lg" href="#work" data-magnetic>
+              <span>Explore My Work</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
+          </div>
+
+          <div class="hero__visual" data-hero-visual role="img" aria-label="Interactive 3D sculpture: a glossy black chrome sphere circled by chrome orbital rings, with a small pearl-white sphere in orbit, floating above a sculptural platform.">
+            <div class="hero-fallback" aria-hidden="true">
+              <span class="hf-shadow"></span>
+              <span class="hf-platform"></span>
+              <span class="hf-ring hf-ring--b"></span>
+              <span class="hf-sphere"></span>
+              <span class="hf-ring hf-ring--a"></span>
+              <span class="hf-pearl"></span>
+            </div>
+          </div>
+        </div>
+
+        <a class="scroll-cue" href="#work" aria-label="Scroll to selected work">
+          <span class="scroll-cue__label">Scroll</span>
+          <span class="scroll-cue__track" aria-hidden="true"><span class="scroll-cue__thumb"></span></span>
+        </a>
+      </section>
+
+      <!-- 03 — Selected work -->
+      <section class="section work" id="work" data-section="work" aria-labelledby="work-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow" data-reveal><span class="eyebrow__index">01</span>Work</p>
+            <h2 class="section-title" id="work-title" data-reveal>Selected Projects.</h2>
+            <p class="section-lead" data-reveal>A collection of concepts and personal projects exploring design, technology and digital experiences.</p>
+          </header>
+
+          <div class="work__grid">
+            <!-- Project 01 -->
+            <article class="project project--wide" data-reveal data-tilt>
+              <div class="project__media">
+                <div class="browser" data-tilt-target>
+                  <div class="browser__bar" aria-hidden="true">
+                    <span class="browser__dots"><i></i><i></i><i></i></span>
+                    <span class="browser__url">Concept preview</span>
+                  </div>
+                  <div class="browser__view">
+                    <div class="mock mock--coaching" aria-hidden="true" data-mock="coaching">
+                      <div class="m-nav">
+                        <span class="m-logo"><i class="m-logo__mark"></i>Lumen Academy</span>
+                        <span class="m-links"><span>Courses</span><span>Faculty</span><span>Timetable</span><span>Admissions</span></span>
+                        <span class="m-btn">Book a demo class</span>
+                      </div>
+                      <div class="m-hero">
+                        <div class="m-hero__copy">
+                          <span class="m-pill"><i></i>Admissions open for the new session</span>
+                          <span class="m-h1">Learn with clarity.<br />Grow with confidence.</span>
+                          <span class="m-p">Focused coaching for Classes 8–12 and entrance exams — small batches, patient teachers and personal mentoring.</span>
+                          <span class="m-actions"><span class="m-btn">Explore courses</span><span class="m-btn m-btn--ghost">Talk to a counsellor</span></span>
+                        </div>
+                        <div class="m-card">
+                          <span class="m-card__head"><b>This week</b><span>Batch A</span></span>
+                          <span class="m-row"><i style="--c:#3b6ea5"></i><span>Physics · Motion in a plane</span><b>Mon 4:00</b></span>
+                          <span class="m-row"><i style="--c:#8aa2c4"></i><span>Mathematics · Integrals</span><b>Tue 4:00</b></span>
+                          <span class="m-row"><i style="--c:#1f3a5f"></i><span>Chemistry · Bonding</span><b>Wed 5:30</b></span>
+                          <span class="m-row"><i style="--c:#b9c8dc"></i><span>Doubt-clearing session</span><b>Sat 10:00</b></span>
+                          <span class="m-card__foot">Small batches · Weekly progress check-ins</span>
+                        </div>
+                      </div>
+                      <div class="m-section">
+                        <span class="m-kicker">Programs</span>
+                        <span class="m-h2">Courses for every stage.</span>
+                        <span class="m-cards">
+                          <span class="m-course"><i></i><b>Foundation</b><span>Classes 8–10 · Maths &amp; Science</span></span>
+                          <span class="m-course"><i></i><b>Senior Secondary</b><span>Classes 11–12 · PCM / PCB</span></span>
+                          <span class="m-course"><i></i><b>Entrance Prep</b><span>JEE · NEET · Mock tests</span></span>
+                        </span>
+                      </div>
+                      <div class="m-band"><span>Visit the campus or join a free demo class this week.</span><span class="m-btn m-btn--light">Enquire now</span></div>
+                      <div class="m-foot"><span>Lumen Academy</span><span>Courses · Faculty · Admissions · Contact</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="project__body">
+                <div class="project__meta">
+                  <span class="project__index">01</span>
+                  <span class="tag">Concept Project</span>
+                </div>
+                <h3 class="project__title">Coaching Institute Website</h3>
+                <p class="project__category">Education Website</p>
+                <p class="project__desc">A modern digital experience concept for an educational institution.</p>
+                <button class="project__open" type="button" data-case-open="coaching" aria-haspopup="dialog">
+                  <span>View case study</span><span class="visually-hidden">: Coaching Institute Website</span>
+                  <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Project 02 -->
+            <article class="project" data-reveal data-tilt>
+              <div class="project__media">
+                <div class="browser" data-tilt-target>
+                  <div class="browser__bar" aria-hidden="true">
+                    <span class="browser__dots"><i></i><i></i><i></i></span>
+                    <span class="browser__url">Concept preview</span>
+                  </div>
+                  <div class="browser__view">
+                    <div class="mock mock--folio" aria-hidden="true" data-mock="portfolio">
+                      <div class="m-nav">
+                        <span class="m-mono">AM—</span>
+                        <span class="m-links"><span>Work</span><span>About</span><span>Journal</span><span>Contact</span></span>
+                        <span class="m-status"><i></i>Available for work</span>
+                      </div>
+                      <div class="m-intro">
+                        <span class="m-name">Alex Morgan</span>
+                        <span class="m-intro__row">
+                          <span class="m-p">Designer &amp; developer crafting calm, considered interfaces for independent brands.</span>
+                          <span class="m-meta">Selected work<br />Index — 04</span>
+                        </span>
+                      </div>
+                      <div class="m-grid">
+                        <span class="m-work"><span class="m-thumb m-thumb--a"></span><span class="m-cap"><b>Field Notes</b><span>Editorial</span></span></span>
+                        <span class="m-work"><span class="m-thumb m-thumb--b"></span><span class="m-cap"><b>Arc</b><span>Brand identity</span></span></span>
+                        <span class="m-work"><span class="m-thumb m-thumb--c"></span><span class="m-cap"><b>Quiet Hours</b><span>Web app</span></span></span>
+                        <span class="m-work"><span class="m-thumb m-thumb--d"></span><span class="m-cap"><b>Grid Studies</b><span>Exploration</span></span></span>
+                      </div>
+                      <div class="m-foot"><span>Let's work together →</span><span>hello@alexmorgan.example</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="project__body">
+                <div class="project__meta">
+                  <span class="project__index">02</span>
+                  <span class="tag">Concept Project</span>
+                </div>
+                <h3 class="project__title">Personal Portfolio Website</h3>
+                <p class="project__category">Portfolio Website</p>
+                <p class="project__desc">A minimalist portfolio concept designed to showcase personal identity and creative work.</p>
+                <button class="project__open" type="button" data-case-open="portfolio" aria-haspopup="dialog">
+                  <span>View case study</span><span class="visually-hidden">: Personal Portfolio Website</span>
+                  <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </button>
+              </div>
+            </article>
+
+            <!-- Project 03 -->
+            <article class="project" data-reveal data-tilt>
+              <div class="project__media">
+                <div class="browser browser--dark" data-tilt-target>
+                  <div class="browser__bar" aria-hidden="true">
+                    <span class="browser__dots"><i></i><i></i><i></i></span>
+                    <span class="browser__url">Concept preview</span>
+                  </div>
+                  <div class="browser__view">
+                    <div class="mock mock--ember" aria-hidden="true" data-mock="restaurant">
+                      <div class="m-nav">
+                        <span class="m-links"><span>Menu</span><span>Story</span><span>Private dining</span></span>
+                        <span class="m-logo">Ember &amp; Oak</span>
+                        <span class="m-btn">Reserve a table</span>
+                      </div>
+                      <div class="m-hero">
+                        <div class="m-hero__copy">
+                          <span class="m-kicker">Wood-fired kitchen</span>
+                          <span class="m-h1">Slow-cooked<br /><em>over open flame.</em></span>
+                          <span class="m-p">Seasonal plates, small-batch breads and a quiet room made for long dinners.</span>
+                          <span class="m-actions"><span class="m-btn">Reserve a table</span><span class="m-link">View the menu</span></span>
+                        </div>
+                        <div class="m-plate">
+                          <i class="m-plate__dish"></i>
+                          <i class="m-plate__sauce"></i>
+                          <i class="m-plate__food m-plate__food--a"></i>
+                          <i class="m-plate__food m-plate__food--b"></i>
+                          <i class="m-plate__herb m-plate__herb--a"></i>
+                          <i class="m-plate__herb m-plate__herb--b"></i>
+                          <i class="m-plate__herb m-plate__herb--c"></i>
+                        </div>
+                      </div>
+                      <div class="m-menu">
+                        <span class="m-kicker">Tonight's menu</span>
+                        <span class="m-menu__cols">
+                          <span class="m-menu__col">
+                            <b class="m-menu__cat">Small plates</b>
+                            <span class="m-dish"><span>Charred corn, lime butter</span><i></i><span>380</span></span>
+                            <span class="m-dish"><span>Smoked paneer, green chutney</span><i></i><span>420</span></span>
+                            <span class="m-dish"><span>Fire-roasted peppers, feta</span><i></i><span>360</span></span>
+                          </span>
+                          <span class="m-menu__col">
+                            <b class="m-menu__cat">From the fire</b>
+                            <span class="m-dish"><span>Ember-roasted chicken, jus</span><i></i><span>780</span></span>
+                            <span class="m-dish"><span>Wood-fired aubergine, miso</span><i></i><span>560</span></span>
+                            <span class="m-dish"><span>Slow lamb shoulder, flatbread</span><i></i><span>920</span></span>
+                          </span>
+                        </span>
+                      </div>
+                      <div class="m-hours"><span>Open Tuesday – Sunday · 6 pm – 11 pm</span><span>Reservations recommended</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="project__body">
+                <div class="project__meta">
+                  <span class="project__index">03</span>
+                  <span class="tag">Concept Project</span>
+                </div>
+                <h3 class="project__title">Restaurant Website</h3>
+                <p class="project__category">Business Website</p>
+                <p class="project__desc">An elegant restaurant website concept focused on visual storytelling and user experience.</p>
+                <button class="project__open" type="button" data-case-open="restaurant" aria-haspopup="dialog">
+                  <span>View case study</span><span class="visually-hidden">: Restaurant Website</span>
+                  <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p class="work__note" data-reveal>All projects shown are self-initiated concepts created for learning and demonstration — not paid client work.</p>
+        </div>
+      </section>
+
+      <!-- 04 — Services -->
+      <section class="section services theme-alt" id="services" data-section="services" aria-labelledby="services-title">
+        <div class="container">
+          <header class="section-head section-head--split">
+            <div>
+              <p class="eyebrow" data-reveal><span class="eyebrow__index">02</span>Services</p>
+              <h2 class="section-title" id="services-title" data-reveal>What I Offer.</h2>
+            </div>
+            <p class="section-lead" data-reveal>Focused, well-built websites for businesses and individuals who want a clear and modern presence online.</p>
+          </header>
+
+          <ul class="services__grid" role="list">
+            <li class="service" data-reveal style="--d:0">
+              <div class="icon3d icon3d--layers" aria-hidden="true">
+                <div class="icon3d__stage">
+                  <span class="icon3d__shadow"></span>
+                  <span class="icon3d__plane" style="--i:0"></span>
+                  <span class="icon3d__plane icon3d__plane--lines" style="--i:1"></span>
+                  <span class="icon3d__plane icon3d__plane--top" style="--i:2"></span>
+                </div>
+              </div>
+              <span class="service__index">01</span>
+              <h3 class="service__title">Business Websites</h3>
+              <p class="service__desc">Modern websites for small businesses — clear, credible and easy to navigate.</p>
+              <a class="service__link" href="#contact" data-project-type="Business Website">
+                <span>Discuss a business site</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </li>
+            <li class="service" data-reveal style="--d:1">
+              <div class="icon3d icon3d--focus" aria-hidden="true">
+                <div class="icon3d__stage">
+                  <span class="icon3d__shadow"></span>
+                  <span class="icon3d__plane icon3d__plane--lines" style="--i:0"></span>
+                  <span class="icon3d__pill" style="--i:1"></span>
+                  <span class="icon3d__ring" style="--i:1"></span>
+                </div>
+              </div>
+              <span class="service__index">02</span>
+              <h3 class="service__title">Landing Pages</h3>
+              <p class="service__desc">Focused pages designed around a single, clear call to action.</p>
+              <a class="service__link" href="#contact" data-project-type="Landing Page">
+                <span>Discuss a landing page</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </li>
+            <li class="service" data-reveal style="--d:2">
+              <div class="icon3d icon3d--grid" aria-hidden="true">
+                <div class="icon3d__stage">
+                  <span class="icon3d__shadow"></span>
+                  <span class="icon3d__plane" style="--i:0"></span>
+                  <span class="icon3d__tile" style="--x:0;--y:0;--h:3"></span>
+                  <span class="icon3d__tile" style="--x:1;--y:0;--h:1.6"></span>
+                  <span class="icon3d__tile" style="--x:0;--y:1;--h:2.2"></span>
+                  <span class="icon3d__tile icon3d__tile--dark" style="--x:1;--y:1;--h:3.6"></span>
+                </div>
+              </div>
+              <span class="service__index">03</span>
+              <h3 class="service__title">Portfolio Websites</h3>
+              <p class="service__desc">Personal websites that showcase your skills, story and work.</p>
+              <a class="service__link" href="#contact" data-project-type="Portfolio Website">
+                <span>Discuss a portfolio</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </li>
+            <li class="service" data-reveal style="--d:3">
+              <div class="icon3d icon3d--redesign" aria-hidden="true">
+                <div class="icon3d__stage">
+                  <span class="icon3d__shadow"></span>
+                  <span class="icon3d__plane icon3d__plane--old" style="--i:0"></span>
+                  <span class="icon3d__plane icon3d__plane--new" style="--i:1"></span>
+                </div>
+              </div>
+              <span class="service__index">04</span>
+              <h3 class="service__title">Website Redesign</h3>
+              <p class="service__desc">Improving existing websites through cleaner design and better usability.</p>
+              <a class="service__link" href="#contact" data-project-type="Website Redesign">
+                <span>Discuss a redesign</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 05 + 06 — About & skills -->
+      <section class="section about theme-dark" id="about" data-section="about" aria-labelledby="about-title">
+        <div class="container about__grid">
+          <div class="about__copy">
+            <p class="eyebrow" data-reveal><span class="eyebrow__index">03</span>About</p>
+            <h2 class="section-title about__title" id="about-title" data-reveal>Turning ideas into <span class="soft">meaningful digital experiences.</span></h2>
+            <p class="about__text" data-reveal>I'm Siddiq, a developer who enjoys creating clean, modern and user-friendly websites. I focus on thoughtful design, responsive layouts and functional experiences. I'm continuously improving my skills and exploring better ways to build for the web.</p>
+
+            <div class="about__interests" data-reveal>
+              <h3 class="label">What I'm exploring</h3>
+              <ul role="list">
+                <li>Thoughtful, minimal interface design</li>
+                <li>Responsive layouts that feel native on every screen</li>
+                <li>Subtle motion and 3D on the web</li>
+                <li>AI-assisted development workflows</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="about__visual" data-about-visual role="img" aria-label="Abstract 3D sculpture: a smoked-glass cube balanced on its corner, circled by a chrome ring, with a pearl sphere floating above it.">
+            <div class="about-fallback" aria-hidden="true">
+              <span class="af-glow"></span>
+              <span class="af-cube"></span>
+              <span class="af-ring"></span>
+              <span class="af-pearl"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container skills" id="skills" aria-labelledby="skills-title">
+          <header class="skills__head">
+            <p class="eyebrow" data-reveal><span class="eyebrow__index">04</span>Skills</p>
+            <h2 class="skills__title" id="skills-title" data-reveal>Tools I build with.</h2>
+            <p class="skills__lead" data-reveal>The technologies I use in my projects — and keep learning every day.</p>
+          </header>
+          <div class="skills__grid">
+            <div class="skills__group" data-reveal style="--d:0">
+              <h3 class="skills__group-title"><span>01</span>Frontend</h3>
+              <ul role="list">
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript</li>
+                <li>React</li>
+              </ul>
+            </div>
+            <div class="skills__group" data-reveal style="--d:1">
+              <h3 class="skills__group-title"><span>02</span>Backend &amp; tools</h3>
+              <ul role="list">
+                <li>Node.js</li>
+                <li>Express</li>
+                <li>MongoDB</li>
+                <li>Git</li>
+                <li>GitHub</li>
+              </ul>
+            </div>
+            <div class="skills__group" data-reveal style="--d:2">
+              <h3 class="skills__group-title"><span>03</span>Workflow</h3>
+              <ul role="list">
+                <li>Responsive design</li>
+                <li>API integration</li>
+                <li>UI implementation</li>
+                <li>AI-assisted development</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 — Process -->
+      <section class="section process" id="process" data-section="about" aria-labelledby="process-title">
+        <div class="container">
+          <header class="section-head section-head--split">
+            <div>
+              <p class="eyebrow" data-reveal><span class="eyebrow__index">05</span>Process</p>
+              <h2 class="section-title" id="process-title" data-reveal>A simple process. <span class="soft">Thoughtful results.</span></h2>
+            </div>
+            <p class="section-lead" data-reveal>Every project follows the same clear path, so you always know what happens next.</p>
+          </header>
+
+          <ol class="timeline" role="list" data-timeline>
+            <li class="timeline__step" style="--i:0">
+              <span class="timeline__node" aria-hidden="true"></span>
+              <span class="timeline__num">01</span>
+              <h3 class="timeline__title">Discover</h3>
+              <p class="timeline__text">Understand the idea, goals and requirements.</p>
+            </li>
+            <li class="timeline__step" style="--i:1">
+              <span class="timeline__node" aria-hidden="true"></span>
+              <span class="timeline__num">02</span>
+              <h3 class="timeline__title">Design</h3>
+              <p class="timeline__text">Plan the structure and visual direction.</p>
+            </li>
+            <li class="timeline__step" style="--i:2">
+              <span class="timeline__node" aria-hidden="true"></span>
+              <span class="timeline__num">03</span>
+              <h3 class="timeline__title">Develop</h3>
+              <p class="timeline__text">Build a responsive and functional website.</p>
+            </li>
+            <li class="timeline__step" style="--i:3">
+              <span class="timeline__node" aria-hidden="true"></span>
+              <span class="timeline__num">04</span>
+              <h3 class="timeline__title">Deliver</h3>
+              <p class="timeline__text">Test, refine and prepare the website for launch.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 08 — Contact -->
+      <section class="section contact" id="contact" data-section="contact" aria-labelledby="contact-title">
+        <div class="container">
+          <p class="eyebrow" data-reveal><span class="eyebrow__index">06</span>Contact</p>
+          <h2 class="contact__title" id="contact-title" data-reveal>Have an idea? <span class="soft">Let's build something great.</span></h2>
+
+          <div class="contact__grid">
+            <div class="contact__info">
+              <p class="section-lead" data-reveal>Tell me what you're planning. I'd love to explore how we can bring it to life.</p>
+
+              <div class="contact-card" data-reveal>
+                <span class="contact-card__icon" aria-hidden="true"><svg class="i"><use href="#i-mail" /></svg></span>
+                <span class="label">Email</span>
+                <a class="contact-card__value" href="mailto:siddiqmd751@gmail.com">siddiqmd751@gmail.com</a>
+                <a class="btn btn--dark" href="mailto:siddiqmd751@gmail.com?subject=Project%20enquiry" data-magnetic>
+                  <span>Send an Email</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+                </a>
+              </div>
+
+              <div class="contact-card" data-reveal>
+                <span class="contact-card__icon" aria-hidden="true"><svg class="i"><use href="#i-chat" /></svg></span>
+                <span class="label">WhatsApp</span>
+                <a class="contact-card__value" href="https://wa.me/917416715011" target="_blank" rel="noopener noreferrer">+91 74167 15011<span class="visually-hidden"> (opens WhatsApp in a new tab)</span></a>
+                <a class="btn btn--ghost" href="https://wa.me/917416715011" target="_blank" rel="noopener noreferrer" data-magnetic>
+                  <span>Chat on WhatsApp</span><svg class="i i--arrow-ne" aria-hidden="true"><use href="#i-arrow-ne" /></svg>
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="form-card" data-reveal>
+              <form class="form" id="contact-form" novalidate data-contact-form>
+                <div class="form__head">
+                  <h3 class="form__title">Start a project</h3>
+                  <p class="form__hint">Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+                </div>
+
+                <div class="form__row">
+                  <div class="field">
+                    <label class="field__label" for="f-name">Name <span aria-hidden="true">*</span></label>
+                    <input class="field__input" id="f-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="80" aria-describedby="f-name-error" />
+                    <p class="field__error" id="f-name-error"></p>
+                  </div>
+                  <div class="field">
+                    <label class="field__label" for="f-email">Email <span aria-hidden="true">*</span></label>
+                    <input class="field__input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120" aria-describedby="f-email-error" />
+                    <p class="field__error" id="f-email-error"></p>
+                  </div>
+                </div>
+
+                <div class="form__row">
+                  <div class="field">
+                    <label class="field__label" for="f-type">Project type <span aria-hidden="true">*</span></label>
+                    <div class="field__select">
+                      <select class="field__input" id="f-type" name="project_type" required aria-describedby="f-type-error">
+                        <option value="">Select a project type</option>
+                        <option>Business Website</option>
+                        <option>Landing Page</option>
+                        <option>Portfolio Website</option>
+                        <option>Website Redesign</option>
+                        <option>Something else</option>
+                      </select>
+                    </div>
+                    <p class="field__error" id="f-type-error"></p>
+                  </div>
+                  <div class="field">
+                    <label class="field__label" for="f-budget">Budget <span class="field__optional">(optional)</span></label>
+                    <input class="field__input" id="f-budget" name="budget" type="text" maxlength="60" placeholder="Your estimated budget" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="f-message">Message <span aria-hidden="true">*</span></label>
+                  <textarea class="field__input field__textarea" id="f-message" name="message" rows="5" required minlength="10" maxlength="2000" aria-describedby="f-message-error f-message-count"></textarea>
+                  <div class="field__meta">
+                    <p class="field__error" id="f-message-error"></p>
+                    <span class="field__count" id="f-message-count" aria-live="off" data-count>0 / 2000</span>
+                  </div>
+                </div>
+
+                <!-- Spam trap: hidden from people, filled in by bots -->
+                <div class="hp" aria-hidden="true">
+                  <label for="f-company">Company</label>
+                  <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div class="form__alert" role="alert" data-form-alert hidden></div>
+
+                <div class="form__footer">
+                  <p class="form__note" data-form-note>Your message goes straight to my inbox.</p>
+                  <button class="btn btn--dark btn--lg form__submit" type="submit" data-form-submit>
+                    <span class="btn__spinner" aria-hidden="true"></span>
+                    <span data-submit-label>Send Message</span>
+                    <svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+                  </button>
+                </div>
+              </form>
+
+              <div class="form-success" data-form-success hidden tabindex="-1" aria-labelledby="form-success-title">
+                <span class="form-success__icon" aria-hidden="true"><svg class="i"><use href="#i-check" /></svg></span>
+                <h3 class="form-success__title" id="form-success-title" data-success-title>Message sent.</h3>
+                <p class="form-success__text" data-success-text>Thank you for reaching out — I'll get back to you soon.</p>
+                <button class="btn btn--ghost" type="button" data-form-reset>Send another message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 09 — Footer -->
+    <footer class="footer theme-dark">
+      <div class="container">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <a class="footer__logo" href="#home">SIDDIQ<span>.</span></a>
+            <p class="footer__statement">Thoughtfully designed, carefully built websites for businesses and individuals.</p>
+          </div>
+          <nav class="footer__col" aria-label="Footer">
+            <h2 class="label">Navigate</h2>
+            <ul role="list">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#work">Work</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="footer__col">
+            <h2 class="label">Get in touch</h2>
+            <ul role="list">
+              <li><a href="mailto:siddiqmd751@gmail.com">siddiqmd751@gmail.com</a></li>
+              <li><a href="https://wa.me/917416715011" target="_blank" rel="noopener noreferrer">WhatsApp · +91 74167 15011<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="footer__wordmark" aria-hidden="true" data-parallax="-0.06">SIDDIQ.</p>
+
+        <div class="footer__bottom">
+          <p>© <span data-year>2026</span> Siddiq. All rights reserved.</p>
+          <a class="footer__top-link" href="#home">
+            <span>Back to top</span><svg class="i" aria-hidden="true"><use href="#i-arrow-up" /></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Case study dialog -->
+    <dialog class="case" id="case-dialog" aria-labelledby="case-title" data-case-dialog>
+      <div class="case__panel">
+        <button class="case__close" type="button" data-case-close aria-label="Close case study">
+          <svg class="i" aria-hidden="true"><use href="#i-close" /></svg>
+        </button>
+        <div class="case__content" data-case-content></div>
+      </div>
+    </dialog>
+
+    <template id="case-coaching">
+      <header class="case__head">
+        <div class="case__meta"><span class="tag">Concept Project</span><span>Education Website</span></div>
+        <h2 class="case__title" id="case-title">Coaching Institute Website</h2>
+        <p class="case__intro">A modern digital experience concept for an educational institution.</p>
+      </header>
+      <div class="case__previews">
+        <figure class="case__desktop">
+          <div class="browser browser--lg">
+            <div class="browser__bar" aria-hidden="true"><span class="browser__dots"><i></i><i></i><i></i></span><span class="browser__url">Concept preview</span></div>
+            <div class="browser__view" data-mock-slot="coaching"></div>
+          </div>
+          <figcaption>Desktop layout — full page preview</figcaption>
+        </figure>
+        <figure class="case__mobile">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="mock mock--coaching mock--mobile" aria-hidden="true">
+                <div class="m-nav"><span class="m-logo"><i class="m-logo__mark"></i>Lumen</span><span class="m-burger"><i></i><i></i></span></div>
+                <div class="m-hero">
+                  <span class="m-pill"><i></i>Admissions open</span>
+                  <span class="m-h1">Learn with clarity. Grow with confidence.</span>
+                  <span class="m-p">Focused coaching for Classes 8–12 and entrance exams.</span>
+                  <span class="m-btn m-btn--block">Explore courses</span>
+                  <span class="m-btn m-btn--ghost m-btn--block">Book a demo class</span>
+                </div>
+                <div class="m-card">
+                  <span class="m-card__head"><b>This week</b><span>Batch A</span></span>
+                  <span class="m-row"><i style="--c:#3b6ea5"></i><span>Physics</span><b>Mon 4:00</b></span>
+                  <span class="m-row"><i style="--c:#8aa2c4"></i><span>Mathematics</span><b>Tue 4:00</b></span>
+                  <span class="m-row"><i style="--c:#1f3a5f"></i><span>Chemistry</span><b>Wed 5:30</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Mobile layout</figcaption>
+        </figure>
+      </div>
+      <div class="case__body">
+        <section class="case__section">
+          <h3>Overview</h3>
+          <p>Lumen Academy is a fictional coaching institute created to explore how an education brand can present its courses, timetables and admissions clearly — for students and parents alike.</p>
+        </section>
+        <section class="case__section">
+          <h3>Design objective</h3>
+          <p>Make the most important information — which course fits, when classes happen and how to enrol — reachable within one or two taps, while keeping the tone calm, welcoming and trustworthy.</p>
+        </section>
+        <section class="case__section">
+          <h3>Key features</h3>
+          <ul class="case__list" role="list">
+            <li>Course overview organised by class and exam</li>
+            <li>Weekly timetable component</li>
+            <li>Demo-class and enquiry call-to-actions</li>
+            <li>Faculty and admissions sections</li>
+            <li>Mobile-first navigation and layout</li>
+            <li>Readable typography with accessible contrast</li>
+          </ul>
+        </section>
+        <section class="case__section">
+          <h3>Technologies</h3>
+          <ul class="chips" role="list"><li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Responsive design</li></ul>
+        </section>
+      </div>
+      <p class="case__note">Concept project — designed for practice and demonstration. Lumen Academy is a fictional brand; this is not client work.</p>
+      <div class="case__cta">
+        <a class="btn btn--dark btn--lg" href="#contact" data-case-contact data-project-type="Business Website">
+          <span>Start a similar project</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+      </div>
+    </template>
+
+    <template id="case-portfolio">
+      <header class="case__head">
+        <div class="case__meta"><span class="tag">Concept Project</span><span>Portfolio Website</span></div>
+        <h2 class="case__title" id="case-title">Personal Portfolio Website</h2>
+        <p class="case__intro">A minimalist portfolio concept designed to showcase personal identity and creative work.</p>
+      </header>
+      <div class="case__previews">
+        <figure class="case__desktop">
+          <div class="browser browser--lg">
+            <div class="browser__bar" aria-hidden="true"><span class="browser__dots"><i></i><i></i><i></i></span><span class="browser__url">Concept preview</span></div>
+            <div class="browser__view" data-mock-slot="portfolio"></div>
+          </div>
+          <figcaption>Desktop layout — full page preview</figcaption>
+        </figure>
+        <figure class="case__mobile">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="mock mock--folio mock--mobile" aria-hidden="true">
+                <div class="m-nav"><span class="m-mono">AM—</span><span class="m-burger"><i></i><i></i></span></div>
+                <div class="m-intro">
+                  <span class="m-status"><i></i>Available for work</span>
+                  <span class="m-name">Alex Morgan</span>
+                  <span class="m-p">Designer &amp; developer crafting calm, considered interfaces.</span>
+                </div>
+                <div class="m-grid">
+                  <span class="m-work"><span class="m-thumb m-thumb--a"></span><span class="m-cap"><b>Field Notes</b><span>Editorial</span></span></span>
+                  <span class="m-work"><span class="m-thumb m-thumb--b"></span><span class="m-cap"><b>Arc</b><span>Brand identity</span></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Mobile layout</figcaption>
+        </figure>
+      </div>
+      <div class="case__body">
+        <section class="case__section">
+          <h3>Overview</h3>
+          <p>A portfolio concept for a fictional designer. The layout lets the work lead, with typography, whitespace and a restrained palette doing the heavy lifting.</p>
+        </section>
+        <section class="case__section">
+          <h3>Design objective</h3>
+          <p>Create a personal site that feels distinctive without decoration — quick to scan, easy to navigate, and simple to update as new work is added.</p>
+        </section>
+        <section class="case__section">
+          <h3>Key features</h3>
+          <ul class="case__list" role="list">
+            <li>Typographic hero with availability status</li>
+            <li>Project grid with clear captions</li>
+            <li>About and contact sections</li>
+            <li>Subtle, purposeful motion</li>
+            <li>Lightweight pages that load quickly</li>
+            <li>Fully responsive from phone to desktop</li>
+          </ul>
+        </section>
+        <section class="case__section">
+          <h3>Technologies</h3>
+          <ul class="chips" role="list"><li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Responsive design</li></ul>
+        </section>
+      </div>
+      <p class="case__note">Concept project — designed for practice and demonstration. "Alex Morgan" is a fictional person; this is not client work.</p>
+      <div class="case__cta">
+        <a class="btn btn--dark btn--lg" href="#contact" data-case-contact data-project-type="Portfolio Website">
+          <span>Start a similar project</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+      </div>
+    </template>
+
+    <template id="case-restaurant">
+      <header class="case__head">
+        <div class="case__meta"><span class="tag">Concept Project</span><span>Business Website</span></div>
+        <h2 class="case__title" id="case-title">Restaurant Website</h2>
+        <p class="case__intro">An elegant restaurant website concept focused on visual storytelling and user experience.</p>
+      </header>
+      <div class="case__previews">
+        <figure class="case__desktop">
+          <div class="browser browser--lg browser--dark">
+            <div class="browser__bar" aria-hidden="true"><span class="browser__dots"><i></i><i></i><i></i></span><span class="browser__url">Concept preview</span></div>
+            <div class="browser__view" data-mock-slot="restaurant"></div>
+          </div>
+          <figcaption>Desktop layout — full page preview</figcaption>
+        </figure>
+        <figure class="case__mobile">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="mock mock--ember mock--mobile" aria-hidden="true">
+                <div class="m-nav"><span class="m-logo">Ember &amp; Oak</span><span class="m-burger"><i></i><i></i></span></div>
+                <div class="m-hero">
+                  <div class="m-plate">
+                    <i class="m-plate__dish"></i><i class="m-plate__sauce"></i>
+                    <i class="m-plate__food m-plate__food--a"></i><i class="m-plate__food m-plate__food--b"></i>
+                    <i class="m-plate__herb m-plate__herb--a"></i><i class="m-plate__herb m-plate__herb--b"></i><i class="m-plate__herb m-plate__herb--c"></i>
+                  </div>
+                  <span class="m-kicker">Wood-fired kitchen</span>
+                  <span class="m-h1">Slow-cooked <em>over open flame.</em></span>
+                  <span class="m-btn m-btn--block">Reserve a table</span>
+                </div>
+                <div class="m-menu">
+                  <b class="m-menu__cat">Small plates</b>
+                  <span class="m-dish"><span>Charred corn, lime butter</span><i></i><span>380</span></span>
+                  <span class="m-dish"><span>Smoked paneer</span><i></i><span>420</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Mobile layout</figcaption>
+        </figure>
+      </div>
+      <div class="case__body">
+        <section class="case__section">
+          <h3>Overview</h3>
+          <p>Ember &amp; Oak is a fictional restaurant concept exploring how atmosphere, food and story can be carried through a website before guests ever arrive.</p>
+        </section>
+        <section class="case__section">
+          <h3>Design objective</h3>
+          <p>Use rich, dark visuals and generous typography to set the mood — while keeping the menu, opening hours and reservations immediately accessible on any device.</p>
+        </section>
+        <section class="case__section">
+          <h3>Key features</h3>
+          <ul class="case__list" role="list">
+            <li>Atmospheric hero with a clear reservation call-to-action</li>
+            <li>Menu with categories and easy-to-read pricing</li>
+            <li>Story section for the kitchen and its people</li>
+            <li>Opening hours and location at a glance</li>
+            <li>Comfortable menu reading on mobile</li>
+            <li>Consistent visual language across pages</li>
+          </ul>
+        </section>
+        <section class="case__section">
+          <h3>Technologies</h3>
+          <ul class="chips" role="list"><li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Responsive design</li></ul>
+        </section>
+      </div>
+      <p class="case__note">Concept project — designed for practice and demonstration. Ember &amp; Oak is a fictional restaurant; this is not client work.</p>
+      <div class="case__cta">
+        <a class="btn btn--dark btn--lg" href="#contact" data-case-contact data-project-type="Business Website">
+          <span>Start a similar project</span><svg class="i i--arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+      </div>
+    </template>
+  </body>
+</html>
