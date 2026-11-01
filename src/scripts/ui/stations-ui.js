@@ -1,4 +1,5 @@
 import { clamp, isReduced, onScroll } from './env.js';
+import { workIndex, workProgress } from '../../lib/works-track.js';
 
 /**
  * Orientation + station UI: the rail and pill show where you are; the Works gallery
@@ -22,14 +23,15 @@ export function initStations() {
     for (const s of sections) if (s.getBoundingClientRect().top <= probe) active = s;
     const id = active.dataset.station;
 
-    // Per-station progress for the rail ticks.
-    for (const a of links) {
-      const section = document.getElementById(a.dataset.stationLink);
-      if (!section) continue;
-      const r = section.getBoundingClientRect();
-      const p = clamp((probe - r.top) / Math.max(r.height, 1), 0, 1);
-      a.querySelector('.rail__tick')?.style.setProperty('--p', p.toFixed(3));
-    }
+    // Per-station progress for the rail ticks: measure everything first, then write, so a
+    // scroll frame costs one layout rather than one per station.
+    const progress = links.map((a) => {
+      const r = document.getElementById(a.dataset.stationLink)?.getBoundingClientRect();
+      return r ? clamp((probe - r.top) / Math.max(r.height, 1), 0, 1) : null;
+    });
+    links.forEach((a, i) => {
+      if (progress[i] !== null) a.querySelector('.rail__tick')?.style.setProperty('--p', progress[i].toFixed(3));
+    });
 
     if (id !== current) {
       current = id;
@@ -61,11 +63,12 @@ function initWorksGallery() {
   const gallery = window.matchMedia('(min-width: 1024px)');
   let index = 0;
 
-  const progressFor = (i) => (cards.length > 1 ? i / (cards.length - 1) : 0);
+  // The 3D hall reads the same track (works-track.js), so the copy changes exactly half way
+  // through the camera's move between two screens.
   const scrollToIndex = (i) => {
     const top = section.getBoundingClientRect().top + window.scrollY;
     const range = section.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: top + range * progressFor(i) + 1, behavior: isReduced() ? 'auto' : 'smooth' });
+    window.scrollTo({ top: top + range * workProgress(i, cards.length), behavior: isReduced() ? 'auto' : 'smooth' });
   };
 
   const setIndex = (i) => {
@@ -76,7 +79,6 @@ function initWorksGallery() {
       card.inert = !on;
     });
     steps.forEach((s, n) => s.setAttribute('aria-current', String(n === i)));
-    window.dispatchEvent(new CustomEvent('dimension:work', { detail: { index: i } }));
   };
 
   onScroll(() => {
@@ -86,8 +88,7 @@ function initWorksGallery() {
     }
     const rect = section.getBoundingClientRect();
     const range = section.offsetHeight - window.innerHeight;
-    const p = clamp(-rect.top / Math.max(range, 1), 0, 1);
-    const i = Math.round(p * (cards.length - 1));
+    const i = workIndex(-rect.top / Math.max(range, 1), cards.length);
     if (i !== index || cards.some((c, n) => c.inert === (n === i))) setIndex(i);
   });
 

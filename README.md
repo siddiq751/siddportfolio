@@ -1,15 +1,18 @@
 # Siddiq — The Digital Dimension
 
-An immersive portfolio: a dark, architectural 3D world (Three.js) that you travel through by
+An immersive portfolio: a white 3D product studio (Three.js) that you travel through by
 scrolling, with every piece of content in fast, accessible HTML on top of it.
 
-- **The concept — "Horizon":** an infinite stone plane, one line of warm light, and _the Core_ —
-  a black chrome sphere that rises on the horizon in eclipse. Scrolling moves the camera through
-  five stations (Core → Origin → Instruments → Works → Transmission) and through a day of light.
-  The horizon never moves on screen; the world moves around it.
+- **The concept — "White Chrome":** an infinite white cyclorama with a glossy lacquer floor, one
+  hairline horizon, and _the Core_ — a liquid-chrome sphere that surfaces through the floor on the
+  first visit. Scrolling moves the camera through five stations (Core → Origin → Instruments →
+  Works → Transmission). The horizon never moves on screen; the studio moves around it.
+- **Look:** white dominates; chrome is the only accent; ink (#111) is used sparingly, and the
+  footer is the one dark room. Every 3D object is lit by a baked studio environment (softboxes,
+  strip lights, black flags) and grounded by soft contact shadows — no glows, no neon.
 - **Stack:** Astro 7 (static output, no UI framework) · vanilla JavaScript · Three.js 0.187.
   One optional Vercel Function for the AI assistant.
-- **Fonts:** Archivo (variable width + weight, subset to what's used) and Geist Mono, self-hosted (OFL).
+- **Fonts:** Geist and Geist Mono (variable, Latin subset), self-hosted (OFL).
 
 > v1 of the site (light, Vite) is preserved on the `main` branch at commit `499ab59`.
 
@@ -130,9 +133,43 @@ ASK_MODEL=                  # empty = claude-opus-5-5; claude-haiku-5-5 is far c
   still with no Three.js download for Data Saver, software GPUs, no WebGL 2, or "3D off".
 - **Index → Experience settings** (⌘K / Ctrl+K): _Reduce motion_ (no intro, no camera travel),
   _3D world_ on/off (remembered), _Immersive mode_ (fullscreen, desktop).
+- **Scroll sync:** camera, objects and light are all functions of one lightly smoothed copy of
+  the scroll (it settles within about half a second), so the film never runs ahead of or behind
+  the copy, and scrolling back plays it in reverse. The keyframes come from the page itself: each
+  station marks its copy with `data-beat`, the camera holds at a station while that copy crosses
+  the middle of the screen, and it travels only while the gap between two stations does, passing
+  each sculpture on the viewer's left. The pinned Works hall and its cards share one track
+  (`src/lib/works-track.js`), so each project gets a held shot and the copy changes half way
+  through the move between screens. Links that jump two or more stations (Index, rail, hero
+  buttons, deep links) dip to white instead of racing through the studio. Tune it with `SYNC`
+  and `STATIONS` in `src/scripts/world/engine.js`.
 - Pauses when the tab is hidden or an overlay is open, halves its frame rate after 6 s without
   input, lowers resolution on slow GPUs, and recovers from GPU context loss.
 - Fully procedural — no models or textures to download except the project screenshots.
+- **Look development:** the studio light lives in `src/scripts/world/renderer.js` (the baked
+  environment every chrome surface reflects); the cyclorama and floor shaders in `environment.js`;
+  the Core in `core.js` (clipped at the floor so it surfaces like liquid, with its reflection);
+  the station sculptures in `stations.js`.
+
+## Design tokens
+
+All colour, type, radius and shadow decisions live in `src/styles/tokens.css`:
+
+| Token                | Value     | Use                                                      |
+| -------------------- | --------- | -------------------------------------------------------- |
+| `--white`            | `#FFFFFF` | Primary background                                       |
+| `--mist`             | `#F7F7F7` | Secondary background, form fields                        |
+| `--cloud`            | `#F1F1F1` | Soft surfaces                                            |
+| `--silver`           | `#C8C8C8` | Metallic silver (hairlines, hovers)                      |
+| `--chrome`           | `#E8E8E8` | Chrome highlight                                         |
+| `--hairline`         | `#E5E5E5` | Borders                                                  |
+| `--ink`              | `#111111` | Primary text, primary buttons, the footer                |
+| `--graphite`         | `#6E6E6E` | Secondary text (AA contrast on every light surface)      |
+| `--pewter`           | `#777777` | Large or decorative secondary text only                  |
+| `--chrome-bar/-ball` | gradients | Chrome hairlines and the small chrome beads (list marks) |
+
+`#777777` on white is 4.48:1 — just under WCAG AA for body text — so small secondary text uses
+`--graphite` instead.
 
 ---
 
@@ -176,12 +213,12 @@ Optional later: Vercel Web Analytics / Speed Insights (cookie-free) and a free u
 
 ## Measured quality (local production build)
 
-| Page             | Performance | Accessibility | Best practices | SEO |
-| ---------------- | ----------- | ------------- | -------------- | --- |
-| Home — mobile    | 97–98       | 100           | 100            | 100 |
-| Home — desktop   | 100         | 100           | 100            | 100 |
-| Privacy — mobile | 100         | 100           | 100            | 100 |
+| Page                | Performance | Accessibility | Best practices | SEO |
+| ------------------- | ----------- | ------------- | -------------- | --- |
+| Home — mobile       | 98–99       | 100           | 100            | 100 |
+| Case study — mobile | 100         | 100           | 100            | 100 |
+| Privacy — mobile    | 100         | 100           | 100            | 100 |
 
-Lighthouse in headless Chrome against `npm run preview`; mobile uses simulated slow 4G and 4× CPU
-slowdown. Home on mobile: LCP 2.3 s, TBT 60–140 ms, CLS 0.014. These are lab numbers from one
+Lighthouse CI (`lighthouserc.json`) against the static build; mobile uses simulated slow 4G and
+4× CPU slowdown. Home on mobile: LCP 2.1 s, TBT 40–70 ms, CLS 0. These are lab numbers from one
 machine — check real-visitor data in Vercel Speed Insights after launch.

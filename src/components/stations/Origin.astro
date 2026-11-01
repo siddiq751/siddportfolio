@@ -6,7 +6,7 @@ const { station } = Astro.props;
 
 <section class="station station--origin" id="origin" data-station="origin" aria-labelledby="origin-title">
   <div class="container">
-    <div class="station__content">
+    <div class="station__content" data-beat>
       <div class="station__scrim" aria-hidden="true"></div>
       <p class="label station-label" data-reveal>
         <span class="station-label__index">{station.index}</span>

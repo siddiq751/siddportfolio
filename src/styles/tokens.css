@@ -1,14 +1,13 @@
 /* ==========================================================================
-   Eclipse — design tokens
-   Mineral neutrals, one warm light (Corona), one cool light used only in 3D.
+   White Chrome — design tokens
+   White dominates. Chrome is the only accent. Ink (#111) is used sparingly.
    ========================================================================== */
 
 @font-face {
-  font-family: 'Archivo';
-  /* Subset: Latin, width 100–125%, weight 400–700 (the ranges the design uses). */
-  src: url('/fonts/archivo-latin-wdth.woff2') format('woff2');
-  font-weight: 400 700;
-  font-stretch: 100% 125%;
+  font-family: 'Geist';
+  /* Latin subset, variable weight 100–900. */
+  src: url('/fonts/geist-latin.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
   unicode-range:
@@ -27,63 +26,78 @@
     U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Metric-matched fallback so the swap to Archivo doesn't shift layout. */
+/* Metric-matched fallback so the swap to Geist doesn't shift layout. */
 @font-face {
-  font-family: 'Archivo Fallback';
+  font-family: 'Geist Fallback';
   src: local('Arial');
-  size-adjust: 101%;
-  ascent-override: 88%;
-  descent-override: 21%;
+  size-adjust: 104%;
+  ascent-override: 94%;
+  descent-override: 22%;
 }
 
 :root {
-  /* Dimension (dark) */
-  --void: #070808;
-  --obsidian: #0b0c0c;
-  --carbon: #141616;
-  --basalt: #222625;
-  --ash: #6e7471;
-  --fog: #9ba19d;
-  --bone: #ece7dd;
+  /* Palette */
+  --white: #ffffff;
+  --mist: #f7f7f7; /* secondary background */
+  --cloud: #f1f1f1; /* soft surface */
+  --silver: #c8c8c8; /* metallic silver */
+  --chrome: #e8e8e8; /* chrome highlight */
+  --hairline: #e5e5e5; /* borders */
+  --ink: #111111; /* primary text + dark sections */
+  --graphite: #6e6e6e; /* secondary text (AA on every light surface) */
+  --pewter: #777777; /* large / decorative secondary text */
+  --red-ink: #c0261c; /* errors only */
 
-  /* Interface (light documents) */
-  --porcelain: #f6f3ee;
-  --linen: #e9e4da;
-  --ink: #121313;
-  --slate: #5c625f;
+  /* Chrome, as gradients: a polished bar and a sphere with a horizon reflection. */
+  --chrome-bar: linear-gradient(
+    90deg,
+    #bdbdbd 0%,
+    #f4f4f4 18%,
+    #9d9d9d 38%,
+    #fafafa 52%,
+    #a9a9a9 70%,
+    #ededed 86%,
+    #bdbdbd 100%
+  );
+  --chrome-ball:
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.95) 0 6%, rgba(255, 255, 255, 0) 22%),
+    linear-gradient(180deg, #fbfbfb 0%, #d9d9d9 30%, #9a9a9a 48%, #2a2a2a 52%, #6f6f6f 58%, #d6d6d6 78%, #f4f4f4 100%);
 
-  /* Light */
-  --corona: #ff8a3d;
-  --ember: #a8441a;
-  --verdigris: #6fbfae;
-  --red: #ff5a4e;
-  --red-ink: #b3261e;
-
-  /* Semantic (dark by default; .paper switches to light) */
-  --bg: var(--obsidian);
-  --surface: var(--carbon);
-  --text: var(--bone);
-  --text-2: var(--fog);
-  --line: rgba(236, 231, 221, 0.1);
-  --line-strong: rgba(236, 231, 221, 0.2);
-  --accent: var(--corona);
-  --focus: var(--corona);
-  --error: var(--red);
+  /* Semantic */
+  --bg: var(--white);
+  --surface: var(--white);
+  --surface-2: var(--mist);
+  --text: var(--ink);
+  --text-2: var(--graphite);
+  --line: var(--hairline);
+  --line-strong: #d4d4d4;
+  --accent: var(--ink);
+  --focus: var(--ink);
+  --error: var(--red-ink);
+  --shadow-soft: 0 1px 2px rgba(17, 17, 17, 0.04), 0 12px 32px -12px rgba(17, 17, 17, 0.12);
+  --shadow-lift: 0 2px 6px rgba(17, 17, 17, 0.05), 0 30px 60px -24px rgba(17, 17, 17, 0.22);
 
   /* Type */
-  --font-display: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
-  --font-text: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  --font-display: 'Geist', 'Geist Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-text: 'Geist', 'Geist Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* Used only inside the restaurant concept mock-up. */
   --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
 
-  --fs-name: clamp(3.4rem, 1rem + 10.6vw, 11.5rem);
-  --fs-title: clamp(2.4rem, 1.2rem + 4.4vw, 5.6rem);
+  --fs-name: clamp(4.2rem, 1rem + 12.4vw, 13.5rem);
+  --fs-title: clamp(2.5rem, 1.3rem + 4.4vw, 5.75rem);
   --fs-h2: clamp(2rem, 1.3rem + 2.4vw, 3.5rem);
   --fs-h3: clamp(1.375rem, 1.2rem + 0.5vw, 1.75rem);
   --fs-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
   --fs-body: 1rem;
   --fs-small: 0.875rem;
   --fs-micro: 0.75rem;
+
+  /* Radii: pills for controls, soft corners for surfaces — never decorative. */
+  --r-pill: 999px;
+  --r-field: 12px;
+  --r-card: 18px;
+  --r-media: 14px;
 
   /* Space (8pt rhythm) */
   --s-1: 4px;
@@ -129,27 +143,18 @@
   }
 }
 
-/* Dark surfaces keep dark tokens even on light document pages. */
-.footer,
-.index,
-.ask,
-.lost {
-  --text: var(--bone);
-  --text-2: var(--fog);
-  --line: rgba(236, 231, 221, 0.1);
-  --line-strong: rgba(236, 231, 221, 0.2);
-  --accent: var(--corona);
-  --focus: var(--corona);
+/* The one dark surface: the footer. */
+.footer {
+  --bg: var(--ink);
+  --text: #f5f5f5;
+  --text-2: #9a9a9a;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --accent: #f5f5f5;
+  --focus: #f5f5f5;
 }
 
+/* Documents share the light theme; .paper only marks the page type. */
 .paper {
-  --bg: var(--porcelain);
-  --surface: #fffdf9;
-  --text: var(--ink);
-  --text-2: var(--slate);
-  --line: rgba(18, 19, 19, 0.1);
-  --line-strong: rgba(18, 19, 19, 0.22);
-  --accent: var(--ember);
-  --focus: var(--ember);
-  --error: var(--red-ink);
+  --bg: var(--white);
 }

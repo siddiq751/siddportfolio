@@ -8,7 +8,7 @@ import site from '../../content/site.json';
       <span>{site.role}</span>
       {site.availability && <span class="hero__status">{site.availability}</span>}
     </p>
-    <h1 class="hero__name" id="hero-name">
+    <h1 class="hero__name" id="hero-name" data-beat>
       {site.name}
       <span class="visually-hidden">, {site.role.toLowerCase()}</span>
     </h1>
@@ -20,7 +20,7 @@ import site from '../../content/site.json';
     <p class="hero__intro" style="--d:1">
       {site.intro}
     </p>
-    <div class="hero__actions" style="--d:2">
+    <div class="hero__actions" style="--d:2" data-beat>
       <a class="btn btn--primary" href="#works" data-magnetic>
         View work{' '}
         <svg class="i i--arrow" aria-hidden="true">

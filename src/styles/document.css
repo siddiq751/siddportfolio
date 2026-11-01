@@ -1,23 +1,34 @@
 /* ==========================================================================
-   Documents: the light "interface" layer (case studies, privacy, 404)
+   Documents: case studies, privacy, 404 — the same white studio, set as editorial pages
    ========================================================================== */
 
 .doc {
-  padding: calc(var(--nav-h) + var(--s-7)) 0 var(--s-9);
+  /* Block padding only: the .container keeps its side margins. */
+  padding-block: calc(var(--nav-h) + var(--s-7)) var(--s-9);
 }
 
 .doc__back {
   margin-bottom: var(--s-7);
+  color: var(--text-2);
+  transition: color var(--t-micro) ease;
+}
+
+.doc__back:hover {
+  color: var(--text);
 }
 
 .doc__back .i {
   transform: rotate(180deg);
 }
 
+.doc__back:hover .i {
+  transform: rotate(180deg) translateX(3px);
+}
+
 .doc__head {
   display: grid;
   gap: var(--s-4);
-  max-width: 52rem;
+  max-width: 56rem;
 }
 
 .doc__meta {
@@ -31,11 +42,10 @@
 
 .doc__title {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 1.2rem + 4.2vw, 5rem);
-  font-stretch: 110%;
-  font-weight: 540;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
+  font-size: clamp(2.75rem, 1.2rem + 5vw, 6rem);
+  font-weight: 620;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
   text-wrap: balance;
 }
 
@@ -45,13 +55,18 @@
   color: var(--text-2);
 }
 
+/* The previews sit on a seamless studio sweep. */
 .doc__previews {
+  position: relative;
   display: grid;
   gap: var(--s-6);
   margin: var(--s-8) 0;
-  padding: clamp(16px, 4vw, 56px);
-  border-radius: 2px;
-  background: var(--linen);
+  padding: clamp(18px, 4vw, 64px);
+  border-radius: calc(var(--r-card) + 6px);
+  background:
+    radial-gradient(80% 70% at 50% 0%, #ffffff, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, var(--mist), var(--cloud));
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .doc__previews figure {
@@ -65,7 +80,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
-  color: var(--slate);
+  color: var(--text-2);
 }
 
 .doc__previews .browser__view {
@@ -98,18 +113,19 @@
 .doc__list li {
   display: flex;
   gap: 12px;
-  padding: 11px 0;
+  padding: 12px 0;
   border-top: 1px solid var(--line);
 }
 
 .doc__list li::before {
   content: '';
-  width: 5px;
-  height: 5px;
-  margin-top: 0.7em;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.62em;
   flex: none;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--chrome-ball);
+  box-shadow: 0 0 0 0.5px rgba(17, 17, 17, 0.25);
 }
 
 .chips {
@@ -119,9 +135,10 @@
 }
 
 .chips li {
-  padding: 7px 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  background: var(--mist);
+  box-shadow: inset 0 0 0 1px var(--line);
   font-size: var(--fs-small);
   font-weight: 520;
 }
@@ -135,9 +152,10 @@
 
 .doc__note {
   margin-top: var(--s-7);
-  padding: 16px 18px;
-  border-radius: 2px;
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+  padding: 18px 20px;
+  border-radius: var(--r-field);
+  background: var(--mist);
+  box-shadow: inset 0 0 0 1px var(--line);
   font-size: var(--fs-small);
   color: var(--text-2);
 }
@@ -161,14 +179,14 @@
   justify-self: start;
   font-family: var(--font-display);
   font-size: var(--fs-h2);
-  font-stretch: 110%;
-  font-weight: 540;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.045em;
   line-height: 1.05;
+  transition: color var(--t-micro) ease;
 }
 
 .doc__next a:hover {
-  color: var(--accent);
+  color: var(--text-2);
 }
 
 .prose {
@@ -182,9 +200,8 @@
   margin-top: var(--s-4);
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  font-stretch: 106%;
-  font-weight: 560;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
 .prose p,
@@ -199,16 +216,23 @@
 
 .prose a {
   text-decoration: underline;
+  text-decoration-color: var(--silver);
   text-underline-offset: 3px;
 }
 
-/* 404 is dark: lost in the dimension. */
+.prose a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* 404: a lone chrome sphere in an empty white room. */
 .lost {
   display: grid;
   place-items: center;
   min-height: 100svh;
   padding: var(--s-8) var(--margin);
   text-align: center;
+  background:
+    radial-gradient(70% 50% at 50% 38%, #ffffff, rgba(255, 255, 255, 0) 70%), linear-gradient(180deg, #f1f1f2, #fbfbfb);
 }
 
 .lost__inner {
@@ -218,6 +242,6 @@
 }
 
 .lost__mark {
-  width: 96px;
-  height: 96px;
+  width: 112px;
+  height: 112px;
 }

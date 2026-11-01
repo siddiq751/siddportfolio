@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Motion — "light before form". Respects the OS reduced-motion setting and
+   Motion — "light finds the metal". Respects the OS reduced-motion setting and
    the in-site Motion toggle (html[data-motion="reduced"]).
    ========================================================================== */
 
@@ -16,12 +16,23 @@
   }
 }
 
-/* The name gathers onto the horizon: letters arrive spread along the line of light and
-   settle into place. It only ever narrows, so the first paint stays the largest (good LCP). */
+/* The name condenses onto the horizon: it only ever narrows, so the first paint stays
+   the largest (good LCP), and it never starts fully transparent. */
 @keyframes name-gather {
   from {
-    letter-spacing: 0.32em;
-    opacity: 0.25;
+    letter-spacing: 0.04em;
+    opacity: 0.18;
+    filter: blur(14px);
+  }
+}
+
+/* A studio light passes across the ink letters once they settle. */
+@keyframes name-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
   }
 }
 
@@ -35,7 +46,7 @@
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   :root:not([data-motion='reduced']) [data-reveal] {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(28px);
     transition:
       opacity 0.9s ease,
       transform var(--t-reveal) var(--ease-arrive);
@@ -47,31 +58,57 @@
     transform: none;
   }
 
-  /* Light leads: a hairline of light passes over titles before they settle. */
+  /* Titles: a chrome highlight sweeps through the ink as they arrive. */
   :root:not([data-motion='reduced']) .title[data-reveal] {
-    background: linear-gradient(100deg, var(--text) 0 45%, #fff3e6 50%, var(--text) 55% 100%) 100% 0 / 300% 100%
-      no-repeat;
+    background: linear-gradient(100deg, var(--text) 0 44%, #d6d6d6 49%, #ffffff 50%, #d6d6d6 51%, var(--text) 56% 100%)
+      100% 0 / 300% 100% no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     transition:
       opacity 0.9s ease,
       transform var(--t-reveal) var(--ease-arrive),
-      background-position 1.8s var(--ease-arrive) 0.1s;
+      background-position 2s var(--ease-arrive) 0.15s;
   }
 
   :root:not([data-motion='reduced']) .title[data-reveal].is-visible {
     background-position: 0% 0;
   }
 
+  /* The quiet half keeps its brushed-metal fill while the sheen passes. */
+  :root:not([data-motion='reduced']) .title[data-reveal] .soft {
+    -webkit-text-fill-color: transparent;
+  }
+
+  :root:not([data-motion='reduced']) .hero__name {
+    background: linear-gradient(
+        100deg,
+        var(--ink) 0 44%,
+        #cfcfcf 48.5%,
+        #ffffff 50%,
+        #cfcfcf 51.5%,
+        var(--ink) 56% 100%
+      )
+      100% 0 / 300% 100% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   /* First visit: the entrance plays once per session (data-intro is set by /boot.js). */
   :root[data-intro='play']:not([data-motion='reduced']) .hero__name {
-    animation: name-gather 1.8s var(--ease-arrive) both;
+    animation:
+      name-gather 1.9s var(--ease-arrive) both,
+      name-sheen 2.4s var(--ease-arrive) 1.5s both;
+  }
+
+  :root[data-intro='skip']:not([data-motion='reduced']) .hero__name {
+    animation: name-sheen 2.2s var(--ease-arrive) 0.3s both;
   }
 
   :root[data-intro='play']:not([data-motion='reduced']) .hero__eyebrow,
   :root[data-intro='play']:not([data-motion='reduced']) .hero__bottom > * {
-    animation: rise 1s var(--ease-arrive) both;
+    animation: rise 1.1s var(--ease-arrive) both;
     animation-delay: calc(1.5s + var(--d, 0) * 90ms);
   }
 
@@ -86,7 +123,7 @@
 
   :root[data-intro='skip'] .hero__bottom > *,
   :root[data-intro='skip'] .hero__eyebrow {
-    animation: rise 0.7s var(--ease-arrive) both;
+    animation: rise 0.8s var(--ease-arrive) both;
     animation-delay: calc(var(--d, 0) * 60ms);
   }
 }
@@ -128,15 +165,33 @@
   transition-delay: 0s !important;
 }
 
-/* Cross-document page transitions (progressive: browsers without support just navigate). */
+/* Cross-document page transitions (progressive: browsers without support just navigate).
+   The old page settles back and fades; the new one rises into place. */
 @view-transition {
   navigation: auto;
 }
 
-::view-transition-old(root),
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+    filter: blur(6px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: vt-out 0.35s var(--ease-exit) both;
+}
+
 ::view-transition-new(root) {
-  animation-duration: 0.45s;
-  animation-timing-function: var(--ease-arrive);
+  animation: vt-in 0.6s var(--ease-arrive) 0.12s both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -144,4 +199,9 @@
   ::view-transition-new(root) {
     animation: none;
   }
+}
+
+:root[data-motion='reduced']::view-transition-old(root),
+:root[data-motion='reduced']::view-transition-new(root) {
+  animation: none;
 }

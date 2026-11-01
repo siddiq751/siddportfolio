@@ -4,36 +4,32 @@ import {
   Mesh,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
+  Plane,
   PlaneGeometry,
   SphereGeometry,
   TorusGeometry,
   Vector3,
 } from 'three';
 import { SIMPLEX } from './glsl.js';
-import { createCorona, radialTexture } from './environment.js';
+import { radialTexture } from './environment.js';
 
 const RADIUS = 1;
 
+/** Keeps what is above the floor (the subject) or below it (its reflection). */
+const ABOVE = [new Plane(new Vector3(0, 1, 0), 0)];
+const BELOW = [new Plane(new Vector3(0, -1, 0), 0)];
+
 /**
- * Black chrome with a living surface. Displacement and its normals are computed in
- * the vertex shader, so reflections ripple like liquid metal while staying PBR.
+ * Liquid chrome with a living surface. Displacement and its normals are computed in the
+ * vertex shader, so studio reflections ripple like mercury while staying PBR.
  */
-function createChromeMaterial() {
-  const uniforms = {
-    uTime: { value: 0 },
-    uAmp: { value: 0.011 },
-    uPoint: { value: new Vector3(0, 0, 1) },
-    uPress: { value: 0 },
-    uRipple: { value: 10 },
-    uRippleAmp: { value: 0 },
-  };
+function createChromeMaterial(uniforms, clippingPlanes) {
   const material = new MeshPhysicalMaterial({
-    color: 0x1d1d1f,
+    color: 0xe4e4e4,
     metalness: 1,
-    roughness: 0.075,
-    clearcoat: 1,
-    clearcoatRoughness: 0.035,
-    envMapIntensity: 1.5,
+    roughness: 0.035,
+    envMapIntensity: 1,
+    clippingPlanes,
   });
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
@@ -70,27 +66,42 @@ function createChromeMaterial() {
       )
       .replace('#include <begin_vertex>', 'vec3 transformed = dispPos;');
   };
-  material.customProgramCacheKey = () => 'dimension-core';
-  return { material, uniforms };
+  material.customProgramCacheKey = () => 'studio-core';
+  return material;
 }
 
-function createTitanium() {
-  return new MeshPhysicalMaterial({ color: 0xb8b4aa, metalness: 1, roughness: 0.22, envMapIntensity: 1.25 });
-}
-
-function createBone() {
-  return new MeshPhysicalMaterial({
-    color: 0xece7dd,
-    roughness: 0.42,
-    clearcoat: 0.6,
-    clearcoatRoughness: 0.2,
-    sheen: 0.4,
-    sheenColor: 0xffffff,
-  });
+/** Polished and satin aluminium for the rings; the moon is a bead of black chrome — the one ink accent. */
+function createMaterials(uniforms, clippingPlanes) {
+  return {
+    chrome: createChromeMaterial(uniforms, clippingPlanes),
+    polished: new MeshPhysicalMaterial({
+      color: 0xdedede,
+      metalness: 1,
+      roughness: 0.1,
+      envMapIntensity: 1,
+      clippingPlanes,
+    }),
+    satin: new MeshPhysicalMaterial({
+      color: 0xc9c9c9,
+      metalness: 1,
+      roughness: 0.32,
+      envMapIntensity: 1.1,
+      clippingPlanes,
+    }),
+    ink: new MeshPhysicalMaterial({
+      color: 0x262626,
+      metalness: 1,
+      roughness: 0.12,
+      clearcoat: 1,
+      clearcoatRoughness: 0.04,
+      envMapIntensity: 1.4,
+      clippingPlanes,
+    }),
+  };
 }
 
 /** Builds the subject twice: the real one and its mirror for floor reflections. */
-function buildSubject({ sphere, chrome, titanium, bone }) {
+function buildSubject(sphere, { chrome, polished, satin, ink }) {
   const root = new Group();
   const core = new Mesh(sphere, chrome);
   root.add(core);
@@ -98,15 +109,15 @@ function buildSubject({ sphere, chrome, titanium, bone }) {
   const precessA = new Group();
   const tiltA = new Group();
   tiltA.rotation.set(1.18, 0, -0.22);
-  const ringA = new Mesh(new TorusGeometry(1.82, 0.011, 12, 240), titanium);
+  const ringA = new Mesh(new TorusGeometry(1.82, 0.014, 16, 240), polished);
   tiltA.add(ringA);
   precessA.add(tiltA);
 
   const precessB = new Group();
   const tiltB = new Group();
   tiltB.rotation.set(-1.0, 0, 0.5);
-  const ringB = new Mesh(new TorusGeometry(2.28, 0.007, 10, 240), titanium);
-  const moon = new Mesh(new SphereGeometry(0.11, 32, 24), bone);
+  const ringB = new Mesh(new TorusGeometry(2.28, 0.008, 12, 240), satin);
+  const moon = new Mesh(new SphereGeometry(0.12, 40, 28), ink);
   tiltB.add(ringB, moon);
   precessB.add(tiltB);
 
@@ -114,37 +125,43 @@ function buildSubject({ sphere, chrome, titanium, bone }) {
   return { root, core, precessA, precessB, tiltA, tiltB, moon };
 }
 
+function shadowPlane(texture, size, opacity) {
+  const mesh = new Mesh(
+    new PlaneGeometry(size, size),
+    new MeshBasicMaterial({ color: 0x111111, map: texture, transparent: true, opacity, depthWrite: false }),
+  );
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.y = 0.002;
+  mesh.renderOrder = -4;
+  return mesh;
+}
+
 export function createCore(quality) {
   const sphere = new SphereGeometry(RADIUS, ...quality.sphere);
-  const { material: chrome, uniforms } = createChromeMaterial();
-  const titanium = createTitanium();
-  const bone = createBone();
+  const uniforms = {
+    uTime: { value: 0 },
+    uAmp: { value: 0.011 },
+    uPoint: { value: new Vector3(0, 0, 1) },
+    uPress: { value: 0 },
+    uRipple: { value: 10 },
+    uRippleAmp: { value: 0 },
+  };
+  const above = createMaterials(uniforms, ABOVE);
+  const below = createMaterials(uniforms, BELOW);
 
   const group = new Group();
-  const primary = buildSubject({ sphere, chrome, titanium, bone });
-  const mirror = buildSubject({ sphere, chrome, titanium, bone });
+  const primary = buildSubject(sphere, above);
+  const mirror = buildSubject(sphere, below);
   const mirrorRoot = new Group();
   mirrorRoot.scale.y = -1;
   mirrorRoot.add(mirror.root);
   group.add(primary.root, mirrorRoot);
 
-  const corona = createCorona(RADIUS);
-  group.add(corona);
-
-  const shadow = new Mesh(
-    new PlaneGeometry(3.2, 3.2),
-    new MeshBasicMaterial({
-      color: 0x000000,
-      map: radialTexture(),
-      transparent: true,
-      opacity: 0.55,
-      depthWrite: false,
-    }),
-  );
-  shadow.rotation.x = -Math.PI / 2;
-  shadow.position.y = 0.002;
-  shadow.renderOrder = -4;
-  group.add(shadow);
+  // Two shadows, like a real studio: a wide soft umbra and a tighter occlusion core.
+  const shadowTex = radialTexture();
+  const softShadow = shadowPlane(shadowTex, 3.6, 0.2);
+  const coreShadow = shadowPlane(shadowTex, 1.7, 0.32);
+  group.add(softShadow, coreShadow);
 
   const HOME = new Vector3(0, 1.78, 0);
   const state = { time: 0, moon: 2.2, press: 0 };
@@ -163,7 +180,7 @@ export function createCore(quality) {
     group,
     core: primary.core,
     /** rise: 0 = submerged below the floor (intro start), 1 = floating. */
-    update(dt, { motion, camera, energy = 0, rise = 1, glow = 0.35 }) {
+    update(dt, { motion, energy = 0, rise = 1 }) {
       if (motion) state.time += dt;
       const t = state.time;
       uniforms.uTime.value = t;
@@ -172,23 +189,22 @@ export function createCore(quality) {
       uniforms.uPress.value = state.press;
 
       const lift = MathUtils.lerp(-2.4, 0, rise);
-      primary.root.position.set(HOME.x, HOME.y + lift + (motion ? Math.sin(t * 0.8) * 0.05 : 0), HOME.z);
+      primary.root.position.set(HOME.x, HOME.y + lift + (motion ? Math.sin(t * 0.5) * 0.05 : 0), HOME.z);
       if (motion) {
-        primary.precessA.rotation.y += dt * 0.06;
-        primary.precessB.rotation.y -= dt * 0.045;
-        state.moon -= dt * 0.22;
+        primary.precessA.rotation.y += dt * 0.035;
+        primary.precessB.rotation.y -= dt * 0.026;
+        state.moon -= dt * 0.13;
       }
       primary.moon.position.set(Math.cos(state.moon) * 2.28, Math.sin(state.moon) * 2.28, 0);
       sync(primary, mirror);
 
-      corona.position.copy(primary.root.position);
-      corona.quaternion.copy(camera.quaternion);
-      corona.material.uniforms.uIntensity.value = glow;
-      corona.visible = rise > 0.05;
-
+      // Shadows tighten and darken as the sphere settles towards the floor.
       const height = primary.root.position.y - RADIUS;
-      shadow.material.opacity = MathUtils.clamp(0.6 - height * 0.35, 0, 0.6) * rise;
-      shadow.scale.setScalar(1 + Math.max(height, 0) * 0.4);
+      const present = MathUtils.smoothstep(primary.root.position.y + RADIUS, 0, 0.6);
+      softShadow.material.opacity = MathUtils.clamp(0.22 - height * 0.06, 0.08, 0.22) * present;
+      softShadow.scale.setScalar(1 + Math.max(height, 0) * 0.35);
+      coreShadow.material.opacity = MathUtils.clamp(0.4 - height * 0.34, 0, 0.4) * present;
+      coreShadow.scale.setScalar(0.8 + Math.max(height, 0) * 0.5);
     },
     /** Pointer touching the surface (object-space direction). */
     setPoint(dir) {
@@ -202,15 +218,13 @@ export function createCore(quality) {
     worldPosition: () => primary.root.position,
     dispose() {
       sphere.dispose();
-      chrome.dispose();
-      titanium.dispose();
-      bone.dispose();
-      corona.geometry.dispose();
-      corona.material.dispose();
-      shadow.geometry.dispose();
-      shadow.material.map.dispose();
-      shadow.material.dispose();
-      group.traverse((o) => o.isMesh && o.geometry !== sphere && o.geometry.dispose());
+      [above, below].forEach((set) => Object.values(set).forEach((m) => m.dispose()));
+      shadowTex.dispose();
+      group.traverse((o) => {
+        if (!o.isMesh) return;
+        if (o.geometry !== sphere) o.geometry.dispose();
+        if (o === softShadow || o === coreShadow) o.material.dispose();
+      });
     },
   };
 }

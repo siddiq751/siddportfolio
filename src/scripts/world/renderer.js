@@ -16,10 +16,13 @@ import {
 } from 'three';
 
 export const QUALITY = {
-  1: { dpr: 1.5, sphere: [96, 64], motes: 1400, shards: 48, dispersion: 0, transmissionScale: 0.5 },
-  2: { dpr: 1.25, sphere: [144, 96], motes: 4000, shards: 90, dispersion: 0, transmissionScale: 0.75 },
-  3: { dpr: 1.75, sphere: [192, 128], motes: 8000, shards: 140, dispersion: 0.22, transmissionScale: 1 },
+  1: { dpr: 1.5, sphere: [96, 64], shards: 48, dispersion: 0, transmissionScale: 0.5 },
+  2: { dpr: 1.25, sphere: [144, 96], shards: 90, dispersion: 0, transmissionScale: 0.75 },
+  3: { dpr: 1.75, sphere: [192, 128], shards: 140, dispersion: 0.22, transmissionScale: 1 },
 };
+
+/** The studio's paper colour; also the clear colour behind everything. */
+export const STUDIO = 0xf3f3f3;
 
 /** Throws if WebGL 2 is unavailable — the caller keeps the CSS still. */
 export function createRenderer(canvas, quality) {
@@ -31,58 +34,66 @@ export function createRenderer(canvas, quality) {
     powerPreference: 'high-performance',
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality.dpr));
-  renderer.setClearColor(0x070808, 1);
+  renderer.setClearColor(STUDIO, 1);
+  // Khronos PBR Neutral: built for product renders — whites stay white, chrome keeps its hue.
   renderer.toneMapping = NeutralToneMapping;
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.transmissionResolutionScale = quality.transmissionScale;
+  // The Core and its reflection are cut at the floor plane (see core.js).
+  renderer.localClippingEnabled = true;
   return renderer;
 }
 
 /**
- * The dimension's light, baked once into an environment map: a dark graded room,
- * a warm horizon band that wraps the world (every chrome surface reflects the horizon),
- * a warm key softbox and a cool verdigris rim.
+ * The studio's light, baked once into an environment map. It is what every chrome surface
+ * reflects: a white sweep, a graphite horizon band (the line chrome needs to read as chrome),
+ * an overhead softbox, two tall strip lights and black flags that carve the silhouettes.
  */
 export function bakeEnvironment(renderer) {
   const scene = new Scene();
 
-  const room = new SphereGeometry(30, 48, 24);
-  const top = new Color(0x050606);
-  const mid = new Color(0x0f1110);
-  const floor = new Color(0x1a1c1b);
+  const room = new SphereGeometry(30, 64, 32);
+  const zenith = new Color(0x7c7e81);
+  const horizon = new Color(0xd2d2d2);
+  const floor = new Color(0xa9a9a9);
+  const nadir = new Color(0xf6f6f6);
   const c = new Color();
   const colors = [];
   const pos = room.attributes.position;
   for (let i = 0; i < pos.count; i++) {
     const y = pos.getY(i) / 30;
-    if (y > 0) c.copy(mid).lerp(top, Math.pow(y, 0.5));
-    else c.copy(mid).lerp(floor, Math.pow(-y, 0.6));
+    if (y > 0) c.copy(horizon).lerp(zenith, Math.pow(y, 0.7));
+    else c.copy(floor).lerp(nadir, Math.pow(-y, 0.45));
     colors.push(c.r, c.g, c.b);
   }
   room.setAttribute('color', new Float32BufferAttribute(colors, 3));
   scene.add(new Mesh(room, new MeshBasicMaterial({ vertexColors: true, side: BackSide })));
 
-  const emissive = (hex, intensity) => {
+  const panel = (hex, intensity) => {
     const m = new MeshBasicMaterial({ side: DoubleSide });
     m.color.set(hex).multiplyScalar(intensity);
     return m;
   };
 
-  const band = new Mesh(new CylinderGeometry(24, 24, 0.55, 128, 1, true), emissive(0xff8a3d, 7));
+  // The horizon, as chrome sees it: a thin graphite band all the way round.
+  const band = new Mesh(new CylinderGeometry(24, 24, 1.1, 128, 1, true), panel(0x202020, 1));
+  band.position.y = 0.7;
   scene.add(band);
 
-  const softbox = (w, h, hex, intensity, x, y, z) => {
-    const mesh = new Mesh(new PlaneGeometry(w, h), emissive(hex, intensity));
+  const place = (w, h, material, x, y, z) => {
+    const mesh = new Mesh(new PlaneGeometry(w, h), material);
     mesh.position.set(x, y, z);
     mesh.lookAt(0, 0, 0);
     scene.add(mesh);
   };
-  softbox(3.2, 9, 0xfff1e2, 7, -15, 7, 11); // warm key, front-left
-  softbox(2, 9, 0x6fbfae, 3.2, 16, 3, -9); // cool rim, right
-  softbox(18, 8, 0xece7dd, 0.8, 0, 22, 0); // soft top fill
-
+  // Asymmetric, like a real product set: big key upper-left, a tall rim strip right,
+  // one black flag carving the left rim, a long overhead strip for the crown.
+  place(10, 8, panel(0xffffff, 4.2), -11, 11, 9); // key softbox, upper front-left
+  place(1.6, 16, panel(0xffffff, 5.5), 16, 4, -5); // rim strip, right
+  place(26, 3.2, panel(0xffffff, 2.6), 0, 20, -4); // overhead strip
+  place(8, 18, panel(0x0a0a0a, 1), -17, 3, -9); // black flag, back-left
   const pmrem = new PMREMGenerator(renderer);
-  const env = pmrem.fromScene(scene, 0.02).texture;
+  const env = pmrem.fromScene(scene, 0.015).texture;
   pmrem.dispose();
   scene.traverse((o) => {
     o.geometry?.dispose();

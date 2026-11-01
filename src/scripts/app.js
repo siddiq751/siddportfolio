@@ -62,9 +62,16 @@ async function startWorld() {
   try {
     const { mountWorld } = await import('./world/engine.js');
     if (root.dataset.world === 'off') return;
-    world = await mountWorld(container, { tier, intro: root.dataset.intro === 'play' });
-    if (world) root.classList.add('world-on');
-    else root.dataset.tier = '0';
+    const mounted = await mountWorld(container, { tier, intro: root.dataset.intro === 'play' });
+    if (!mounted) {
+      root.dataset.tier = '0';
+    } else if (root.dataset.world === 'off') {
+      // Switched off while it was being built.
+      mounted.dispose();
+    } else {
+      world = mounted;
+      root.classList.add('world-on');
+    }
   } catch (error) {
     console.warn('3D world unavailable:', error);
   } finally {

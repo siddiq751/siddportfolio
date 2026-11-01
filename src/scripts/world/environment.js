@@ -1,12 +1,8 @@
 import {
-  AdditiveBlending,
   BackSide,
-  BufferGeometry,
   CanvasTexture,
-  Float32BufferAttribute,
   Mesh,
   PlaneGeometry,
-  Points,
   ShaderMaterial,
   SphereGeometry,
   SRGBColorSpace,
@@ -15,17 +11,21 @@ import {
 } from 'three';
 import { HASH, VALUE_NOISE, srgb } from './glsl.js';
 
+/** Soft shadows the floor can carry at once (nearest to the camera). */
 export const POOLS = 6;
 
-/** Sky dome: void above, the line of light at the horizon. Follows the camera. */
+/**
+ * The cyclorama: a seamless white backdrop that falls off to a cool grey overhead, with one
+ * hairline seam where the floor meets it — the horizon. Follows the camera.
+ */
 export function createSky() {
   const material = new ShaderMaterial({
     uniforms: {
-      uTop: { value: new Vector3(...srgb(0x050606)) },
-      uMid: { value: new Vector3(...srgb(0x0c0e0d)) },
-      uLine: { value: new Vector3(...srgb(0xff8a3d)) },
+      uTop: { value: new Vector3(...srgb(0xe4e5e7)) },
+      uHorizon: { value: new Vector3(...srgb(0xf5f5f5)) },
+      uBelow: { value: new Vector3(...srgb(0xf6f6f6)) },
+      uSeam: { value: new Vector3(...srgb(0xbdbdbd)) },
       uIntensity: { value: 1 },
-      uGlow: { value: 1 },
       uReveal: { value: 1 },
     },
     vertexShader: /* glsl */ `
@@ -37,19 +37,22 @@ export function createSky() {
         gl_Position.z = gl_Position.w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uTop, uMid, uLine;
-      uniform float uIntensity, uGlow, uReveal;
+      uniform vec3 uTop, uHorizon, uBelow, uSeam;
+      uniform float uIntensity, uReveal;
       varying vec3 vDir;
       ${HASH}
       void main() {
         vec3 d = normalize(vDir);
         float e = d.y;
-        vec3 col = mix(uMid, uTop, smoothstep(0.0, 0.42, e));
+        // Backdrop: brightest just above the floor, a gentle fall-off towards the ceiling.
+        vec3 col = mix(uHorizon, uTop, smoothstep(0.0, 0.55, e));
+        col += vec3(0.018) * exp(-max(e, 0.0) * 14.0);
+        col = e < 0.0 ? uBelow : col;
+        // The seam: drawn outwards from the centre during the intro.
         float az = abs(atan(d.x, -d.z));
         float mask = smoothstep(uReveal * 3.3, uReveal * 3.3 - 0.4, az);
-        float line = exp(-abs(e) * 560.0) * 1.3 + exp(-abs(e) * 80.0) * 0.26;
-        float glow = exp(-max(e, 0.0) * 9.0) * 0.1 * uGlow;
-        col += uLine * (line * mask + glow) * uIntensity;
+        float seam = exp(-abs(e) * 1400.0) * 0.5 + exp(-abs(e) * 160.0) * 0.06;
+        col = mix(col, uSeam, clamp(seam * mask * uIntensity, 0.0, 1.0));
         col += (hash12(gl_FragCoord.xy) - 0.5) / 255.0;
         gl_FragColor = vec4(col, 1.0);
       }`,
@@ -65,21 +68,20 @@ export function createSky() {
 }
 
 /**
- * Infinite polished stone: subtle noise, expansion joints on the 4-unit module,
- * horizon sheen at grazing angles, light pools under subjects. Semi-transparent
- * near the camera so mirrored subjects read as reflections.
+ * Infinite white lacquer: large-format joints on a 4-unit module, a whisper of grain, soft
+ * shadow pools under every object and haze towards the seam. Slightly translucent near the
+ * camera so mirrored subjects read as reflections in a glossy floor. It can also ripple
+ * like liquid where the Core breaks the surface.
  */
 export function createFloor() {
   const pools = Array.from({ length: POOLS }, () => new Vector4(0, 0, 1, 0));
-  const poolColors = Array.from({ length: POOLS }, () => new Vector3(1, 1, 1));
   const material = new ShaderMaterial({
     uniforms: {
-      uBase: { value: new Vector3(...srgb(0x101211)) },
-      uLine: { value: new Vector3(...srgb(0xff8a3d)) },
-      uFar: { value: new Vector3(...srgb(0x161210)) },
-      uIntensity: { value: 1 },
+      uBase: { value: new Vector3(...srgb(0xfafafa)) },
+      uFar: { value: new Vector3(...srgb(0xefefef)) },
+      uShadow: { value: new Vector3(...srgb(0x9a9a9c)) },
       uPools: { value: pools },
-      uPoolColors: { value: poolColors },
+      uRipple: { value: new Vector4(0, 0, 0, 0) },
     },
     vertexShader: /* glsl */ `
       varying vec3 vWorld;
@@ -89,10 +91,9 @@ export function createFloor() {
         gl_Position = projectionMatrix * viewMatrix * wp;
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uBase, uLine, uFar;
-      uniform float uIntensity;
+      uniform vec3 uBase, uFar, uShadow;
       uniform vec4 uPools[${POOLS}];
-      uniform vec3 uPoolColors[${POOLS}];
+      uniform vec4 uRipple;
       varying vec3 vWorld;
       ${HASH}
       ${VALUE_NOISE}
@@ -100,27 +101,38 @@ export function createFloor() {
         vec3 toCam = cameraPosition - vWorld;
         float dist = length(toCam);
         vec3 v = toCam / dist;
-        float n = vnoise(vWorld.xz * 0.35) * 0.6 + vnoise(vWorld.xz * 1.9) * 0.4;
-        vec3 col = uBase * (0.86 + n * 0.24);
+        float n = vnoise(vWorld.xz * 0.3) * 0.6 + vnoise(vWorld.xz * 2.2) * 0.4;
+        vec3 col = uBase * (0.988 + n * 0.02);
 
+        // Joints between large porcelain-white panels.
         vec2 g = abs(fract(vWorld.xz / 4.0 - 0.5) - 0.5) * 4.0;
-        vec2 w = fwidth(vWorld.xz) * 1.4 + 0.012;
+        vec2 w = fwidth(vWorld.xz) * 1.2 + 0.008;
         float joint = 1.0 - min(smoothstep(0.0, w.x, g.x), smoothstep(0.0, w.y, g.y));
-        joint *= 1.0 - smoothstep(18.0, 55.0, dist);
-        col *= 1.0 - joint * 0.4;
+        joint *= 1.0 - smoothstep(6.0, 26.0, dist);
+        col *= 1.0 - joint * 0.03;
 
-        float graze = pow(1.0 - clamp(v.y, 0.0, 1.0), 16.0);
-        col += uLine * graze * 0.24 * uIntensity;
+        // Liquid ripple (intro): rings of light and shade spreading from the breach.
+        vec2 rp = vWorld.xz - uRipple.xy;
+        float rr = length(rp);
+        float front = uRipple.z * 1.9;
+        float ring = sin(rr * 9.0 - uRipple.z * 5.5) * exp(-rr * 0.55) * (1.0 - smoothstep(front - 0.6, front + 0.4, rr));
+        col *= 1.0 + ring * uRipple.w * 0.06;
 
+        // Soft shadows: ambient occlusion pools under objects.
+        float occ = 0.0;
         for (int i = 0; i < ${POOLS}; i++) {
           vec4 p = uPools[i];
           vec2 dp = vWorld.xz - p.xy;
-          col += uPoolColors[i] * p.w * exp(-dot(dp, dp) / (p.z * p.z));
+          occ += p.w * exp(-dot(dp, dp) / (p.z * p.z));
         }
+        col = mix(col, uShadow, clamp(occ, 0.0, 0.6));
 
-        float haze = 1.0 - exp(-pow(dist * 0.012, 1.5));
-        col = mix(col, uFar, haze);
-        float alpha = mix(0.78, 1.0, smoothstep(5.0, 28.0, dist));
+        // Grazing angles pick up the backdrop; distance dissolves into studio haze.
+        float graze = pow(1.0 - clamp(v.y, 0.0, 1.0), 12.0);
+        float haze = 1.0 - exp(-pow(dist * 0.016, 1.4));
+        col = mix(col, uFar, clamp(haze + graze * 0.5, 0.0, 1.0));
+
+        float alpha = mix(0.885, 1.0, smoothstep(6.0, 26.0, dist));
         col += (hash12(gl_FragCoord.xy) - 0.5) / 255.0;
         gl_FragColor = vec4(col, alpha);
       }`,
@@ -133,64 +145,10 @@ export function createFloor() {
   mesh.rotation.x = -Math.PI / 2;
   mesh.renderOrder = -5;
   mesh.frustumCulled = false;
-  return { mesh, pools, poolColors };
+  return { mesh, pools, ripple: material.uniforms.uRipple.value };
 }
 
-/** Light motes drifting through the dimension, animated entirely on the GPU. */
-export function createMotes(count) {
-  const positions = new Float32Array(count * 3);
-  const seeds = new Float32Array(count);
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = -10 + Math.random() * 32;
-    positions[i * 3 + 1] = 0.2 + Math.pow(Math.random(), 1.6) * 7;
-    positions[i * 3 + 2] = 14 - Math.random() * 136;
-    seeds[i] = Math.random();
-  }
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-  geometry.setAttribute('aSeed', new Float32BufferAttribute(seeds, 1));
-  const material = new ShaderMaterial({
-    uniforms: {
-      uTime: { value: 0 },
-      uPixelRatio: { value: 1 },
-      uOpacity: { value: 1 },
-      uColor: { value: new Vector3(...srgb(0xf3dcc4)) },
-    },
-    vertexShader: /* glsl */ `
-      uniform float uTime, uPixelRatio;
-      attribute float aSeed;
-      varying float vAlpha;
-      void main() {
-        vec3 p = position;
-        float t = uTime * 0.25 + aSeed * 50.0;
-        p += vec3(sin(t * 0.7) * 0.35, sin(t * 0.43 + aSeed * 6.0) * 0.25, cos(t * 0.53) * 0.35);
-        vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        gl_Position = projectionMatrix * mv;
-        float depth = -mv.z;
-        gl_PointSize = (1.2 + aSeed * 1.8) * uPixelRatio * (18.0 / max(depth, 1.0));
-        float twinkle = 0.55 + 0.45 * sin(uTime * (0.6 + aSeed) + aSeed * 40.0);
-        vAlpha = twinkle * smoothstep(60.0, 8.0, depth) * smoothstep(0.6, 2.5, depth);
-      }`,
-    fragmentShader: /* glsl */ `
-      uniform vec3 uColor;
-      uniform float uOpacity;
-      varying float vAlpha;
-      void main() {
-        float d = length(gl_PointCoord - 0.5);
-        float a = smoothstep(0.5, 0.0, d) * vAlpha * uOpacity * 0.55;
-        gl_FragColor = vec4(uColor * a, a);
-      }`,
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    toneMapped: false,
-  });
-  const points = new Points(geometry, material);
-  points.frustumCulled = false;
-  return points;
-}
-
-/** Soft radial falloff texture (white, alpha in the gradient). */
+/** Soft radial falloff texture (white, alpha in the gradient) — used for contact shadows. */
 export function radialTexture(
   size = 128,
   stops = [
@@ -210,36 +168,4 @@ export function radialTexture(
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
   return texture;
-}
-
-/** Camera-facing ring glow (the corona) sized so the ring sits on a sphere's limb. */
-export function createCorona(radius, color = 0xff8a3d) {
-  const size = radius * 4.4;
-  const ringAt = (radius * 2) / size;
-  const material = new ShaderMaterial({
-    uniforms: {
-      uColor: { value: new Vector3(...srgb(color)) },
-      uIntensity: { value: 0.35 },
-      uRing: { value: ringAt },
-    },
-    vertexShader: /* glsl */ `
-      varying vec2 vUv;
-      void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
-    fragmentShader: /* glsl */ `
-      uniform vec3 uColor;
-      uniform float uIntensity, uRing;
-      varying vec2 vUv;
-      void main() {
-        float r = length(vUv - 0.5) * 2.0;
-        float ring = exp(-pow((r - uRing) / 0.035, 2.0)) * 0.9;
-        float halo = exp(-max(r - uRing, 0.0) * 9.0) * step(uRing - 0.02, r) * 0.55;
-        float a = (ring + halo) * uIntensity * smoothstep(1.0, 0.85, r);
-        gl_FragColor = vec4(uColor * a, a);
-      }`,
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    toneMapped: false,
-  });
-  return new Mesh(new PlaneGeometry(size, size), material);
 }

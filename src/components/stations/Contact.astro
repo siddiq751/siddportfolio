@@ -7,8 +7,9 @@ const { station } = Astro.props;
 
 <section class="station station--contact" id="contact" data-station="contact" aria-labelledby="contact-title">
   <div class="container">
-    <div class="collab">
+    <div class="collab" data-beat>
       <div class="collab__block">
+        <div class="station__scrim" aria-hidden="true"></div>
         <p class="label station-label" data-reveal>
           <span class="station-label__index">{station.index}</span>
           <span class="station-label__name">Transmission · Contact</span>
@@ -46,7 +47,7 @@ const { station } = Astro.props;
       </div>
     </div>
 
-    <div class="transmission">
+    <div class="transmission" data-beat>
       <div class="transmission__intro station__content">
         <h2 class="title transmission__title" id="contact-title" data-reveal>
           Have an idea? <span class="soft">Let's build something great.</span>

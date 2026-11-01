@@ -1,12 +1,15 @@
 ---
-// The Eclipse: a black disc rising from a line of light. Logo, favicon and loader.
-// Gradients live once in Icons.astro (#mark-corona, #mark-disc, #mark-clip).
+// The mark: a chrome sphere resting above a hairline horizon. Logo, success state and 404.
+// Gradients live once in Icons.astro (#mark-chrome, #mark-spec, #mark-shade). The horizon and
+// outline follow currentColor, so the mark works on the white pages and the dark footer.
 const { class: className = 'mark', title } = Astro.props;
 ---
 
 <svg class={className} viewBox="0 0 48 48" role={title ? 'img' : undefined} aria-hidden={title ? undefined : 'true'}>
   {title && <title>{title}</title>}
-  <circle cx="24" cy="24" r="17" fill="url(#mark-corona)" clip-path="url(#mark-clip)"></circle>
-  <circle cx="24" cy="24" r="11" fill="url(#mark-disc)" clip-path="url(#mark-clip)"></circle>
-  <rect x="3" y="31" width="42" height="1.6" fill="#ff8a3d"></rect>
+  <ellipse cx="24" cy="39.4" rx="10.5" ry="1.7" fill="url(#mark-shade)"></ellipse>
+  <circle cx="24" cy="21" r="13" fill="url(#mark-chrome)"></circle>
+  <circle cx="24" cy="21" r="13" fill="url(#mark-spec)"></circle>
+  <circle cx="24" cy="21" r="12.6" fill="none" stroke="currentColor" stroke-opacity="0.38" stroke-width="0.8"></circle>
+  <rect x="5" y="38.6" width="38" height="1.6" rx="0.8" fill="currentColor"></rect>
 </svg>

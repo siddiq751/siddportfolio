@@ -1,22 +1,27 @@
 ---
-// Icon sprite: 24px grid, 1.5px stroke, square-ish geometry derived from the circle + horizon motif.
+// Icon sprite: 1.5px stroke, geometry derived from the sphere + horizon motif. Also holds the mark's gradients.
 ---
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <radialGradient id="mark-corona" cx="50%" cy="50%" r="50%">
-      <stop offset="0.62" stop-color="#ff8a3d" stop-opacity="0.95"></stop>
-      <stop offset="0.78" stop-color="#ff8a3d" stop-opacity="0.35"></stop>
-      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"></stop>
+    <linearGradient id="mark-chrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"></stop>
+      <stop offset="0.3" stop-color="#d9d9d9"></stop>
+      <stop offset="0.47" stop-color="#9a9a9a"></stop>
+      <stop offset="0.5" stop-color="#232323"></stop>
+      <stop offset="0.57" stop-color="#5c5c5c"></stop>
+      <stop offset="0.8" stop-color="#d4d4d4"></stop>
+      <stop offset="1" stop-color="#f4f4f4"></stop>
+    </linearGradient>
+    <radialGradient id="mark-spec" cx="35%" cy="27%" r="40%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"></stop>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0.35"></stop>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop>
     </radialGradient>
-    <radialGradient id="mark-disc" cx="38%" cy="30%" r="75%">
-      <stop offset="0" stop-color="#3b3d3f"></stop>
-      <stop offset="0.55" stop-color="#0b0c0c"></stop>
-      <stop offset="1" stop-color="#050606"></stop>
+    <radialGradient id="mark-shade" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#111111" stop-opacity="0.35"></stop>
+      <stop offset="1" stop-color="#111111" stop-opacity="0"></stop>
     </radialGradient>
-    <clipPath id="mark-clip">
-      <rect x="0" y="0" width="48" height="31"></rect>
-    </clipPath>
   </defs>
   <symbol id="i-arrow" viewBox="0 0 16 16">
     <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.5"></path>

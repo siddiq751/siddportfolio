@@ -39,13 +39,13 @@ const askEnabled = import.meta.env.PUBLIC_ASK_ENABLED === 'true';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content={paper ? '#F6F3EE' : '#0B0C0C'} />
+    <meta name="theme-color" content="#FFFFFF" />
     <script is:inline set:html={bootSource} />
     <Seo title={title} description={description} image={image} type={type} jsonLd={jsonLd} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preload" href="/fonts/archivo-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body class:list={{ paper }} id="top">
@@ -57,7 +57,7 @@ const askEnabled = import.meta.env.PUBLIC_ASK_ENABLED === 'true';
       <div class="world" data-world aria-hidden="true">
         <div class="world__still">
           <span class="world__horizon" />
-          <span class="world__eclipse" />
+          <span class="world__sphere" />
         </div>
       </div>
     )}
